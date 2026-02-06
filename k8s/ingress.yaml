@@ -19,7 +19,7 @@ spec:
         - name: portfolio-compress
         - name: portfolio-www-redirect
   tls:
-    certResolver: letsencrypt
+    secretName: portfolio-tls
 ---
 # HTTP to HTTPS redirect
 apiVersion: traefik.io/v1alpha1
