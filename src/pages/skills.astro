@@ -1,0 +1,129 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SkillBadge from '@/components/SkillBadge.astro';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+const skillCategories = [
+  {
+    name: 'Languages',
+    icon: '🔤',
+    skills: [
+      { name: 'TypeScript', level: 'expert' as const },
+      { name: 'Python', level: 'advanced' as const },
+      { name: 'Go', level: 'intermediate' as const },
+      { name: 'JavaScript', level: 'expert' as const },
+      { name: 'Bash', level: 'advanced' as const },
+      { name: 'SQL', level: 'advanced' as const },
+    ],
+  },
+  {
+    name: 'Frontend',
+    icon: '🎨',
+    skills: [
+      { name: 'React', level: 'expert' as const },
+      { name: 'Next.js', level: 'advanced' as const },
+      { name: 'Astro', level: 'advanced' as const },
+      { name: 'Tailwind CSS', level: 'expert' as const },
+      { name: 'Vue.js', level: 'intermediate' as const },
+    ],
+  },
+  {
+    name: 'Backend',
+    icon: '⚙️',
+    skills: [
+      { name: 'Node.js', level: 'expert' as const },
+      { name: 'FastAPI', level: 'advanced' as const },
+      { name: 'Express', level: 'advanced' as const },
+      { name: 'GraphQL', level: 'intermediate' as const },
+      { name: 'REST APIs', level: 'expert' as const },
+    ],
+  },
+  {
+    name: 'Cloud & Infrastructure',
+    icon: '☁️',
+    skills: [
+      { name: 'Kubernetes', level: 'expert' as const },
+      { name: 'Docker', level: 'expert' as const },
+      { name: 'AWS', level: 'advanced' as const },
+      { name: 'Terraform', level: 'advanced' as const },
+      { name: 'Helm', level: 'advanced' as const },
+    ],
+  },
+  {
+    name: 'DevOps & Tools',
+    icon: '🔧',
+    skills: [
+      { name: 'Git', level: 'expert' as const },
+      { name: 'GitHub Actions', level: 'advanced' as const },
+      { name: 'ArgoCD', level: 'advanced' as const },
+      { name: 'Prometheus', level: 'intermediate' as const },
+      { name: 'Grafana', level: 'intermediate' as const },
+    ],
+  },
+  {
+    name: 'Databases',
+    icon: '🗄️',
+    skills: [
+      { name: 'PostgreSQL', level: 'advanced' as const },
+      { name: 'Redis', level: 'advanced' as const },
+      { name: 'MongoDB', level: 'intermediate' as const },
+      { name: 'Elasticsearch', level: 'intermediate' as const },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Skills" description="Technical skills and areas of expertise.">
+  <section class="container py-12 md:py-24">
+    <div class="max-w-5xl mx-auto">
+      <!-- Header -->
+      <div class="space-y-4 mb-12">
+        <h1 class="text-4xl font-bold tracking-tight">Skills & Expertise</h1>
+        <p class="text-xl text-muted-foreground">
+          Technologies and tools I work with to build modern software solutions.
+        </p>
+      </div>
+
+      <!-- Legend -->
+      <div class="mb-8 p-4 bg-muted/50 rounded-lg">
+        <p class="text-sm text-muted-foreground mb-3">Proficiency Levels:</p>
+        <div class="flex flex-wrap gap-3">
+          <SkillBadge name="Expert" level="expert" />
+          <SkillBadge name="Advanced" level="advanced" />
+          <SkillBadge name="Intermediate" level="intermediate" />
+          <SkillBadge name="Beginner" level="beginner" />
+        </div>
+      </div>
+
+      <!-- Skills Grid -->
+      <div class="grid md:grid-cols-2 gap-6">
+        {skillCategories.map((category) => (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <span>{category.icon}</span>
+                {category.name}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div class="flex flex-wrap gap-2">
+                {category.skills.map((skill) => (
+                  <SkillBadge name={skill.name} level={skill.level} />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <!-- Additional Info -->
+      <div class="mt-12 p-6 bg-muted/50 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">Always Learning</h2>
+        <p class="text-muted-foreground">
+          Technology evolves rapidly, and I believe in continuous learning.
+          Currently exploring: Rust, WebAssembly, and AI/ML infrastructure.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

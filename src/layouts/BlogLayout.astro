@@ -1,0 +1,54 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { Badge } from '@/components/ui/badge';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  tags?: string[];
+}
+
+const { title, description, date, tags = [] } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="container py-12 max-w-3xl mx-auto">
+    <header class="mb-8 space-y-4">
+      <div class="flex items-center gap-2 text-sm text-muted-foreground">
+        <time datetime={date.toISOString()}>{formattedDate}</time>
+      </div>
+
+      <h1 class="text-4xl font-bold tracking-tight">{title}</h1>
+
+      <p class="text-xl text-muted-foreground">{description}</p>
+
+      {tags.length > 0 && (
+        <div class="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Badge variant="secondary">{tag}</Badge>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
+      <slot />
+    </div>
+
+    <footer class="mt-12 pt-8 border-t">
+      <a
+        href="/blog"
+        class="text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        &larr; Back to all posts
+      </a>
+    </footer>
+  </article>
+</BaseLayout>

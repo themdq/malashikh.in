@@ -1,0 +1,42 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogPostCard from '@/components/BlogPostCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout title="Blog" description="Thoughts on software development, DevOps, and technology.">
+  <section class="container py-12 md:py-24">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="space-y-4 mb-12">
+        <h1 class="text-4xl font-bold tracking-tight">Blog</h1>
+        <p class="text-xl text-muted-foreground">
+          Thoughts, tutorials, and insights on software development.
+        </p>
+      </div>
+
+      <!-- Posts List -->
+      <div class="space-y-8">
+        {posts.map((post) => (
+          <BlogPostCard
+            title={post.data.title}
+            description={post.data.excerpt}
+            date={post.data.date}
+            tags={post.data.tags}
+            slug={post.slug}
+          />
+        ))}
+      </div>
+
+      {posts.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-muted-foreground">No blog posts yet. Check back soon!</p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

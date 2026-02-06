@@ -1,0 +1,131 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+
+const experience = [
+  {
+    title: 'Senior Software Engineer',
+    company: 'Tech Company',
+    period: '2022 - Present',
+    description: 'Leading development of cloud-native applications and infrastructure automation.',
+  },
+  {
+    title: 'Software Engineer',
+    company: 'Startup Inc',
+    period: '2020 - 2022',
+    description: 'Built scalable microservices and implemented CI/CD pipelines.',
+  },
+  {
+    title: 'Junior Developer',
+    company: 'Digital Agency',
+    period: '2018 - 2020',
+    description: 'Developed web applications and learned best practices in software development.',
+  },
+];
+
+const education = [
+  {
+    degree: 'Master of Computer Science',
+    school: 'University',
+    year: '2018',
+  },
+  {
+    degree: 'Bachelor of Computer Science',
+    school: 'University',
+    year: '2016',
+  },
+];
+
+const interests = [
+  'Cloud Infrastructure',
+  'DevOps & SRE',
+  'Open Source',
+  'System Design',
+  'Technical Writing',
+  'Continuous Learning',
+];
+---
+
+<BaseLayout title="About" description="Learn more about Dmitrii Malashikh - background, experience, and interests.">
+  <section class="container py-12 md:py-24">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="space-y-4 mb-12">
+        <h1 class="text-4xl font-bold tracking-tight">About Me</h1>
+        <p class="text-xl text-muted-foreground">
+          Software engineer passionate about building reliable systems and empowering teams.
+        </p>
+      </div>
+
+      <!-- Bio -->
+      <div class="prose prose-neutral dark:prose-invert max-w-none mb-16">
+        <p>
+          I'm a software engineer with over 5 years of experience building scalable,
+          maintainable software systems. My journey in tech started with a fascination
+          for problem-solving and has evolved into a passion for creating elegant solutions
+          to complex challenges.
+        </p>
+        <p>
+          Currently, I focus on cloud infrastructure, Kubernetes, and DevOps practices.
+          I believe in the power of automation, infrastructure as code, and continuous
+          improvement. My goal is to build systems that are not only functional but also
+          resilient, observable, and easy to operate.
+        </p>
+        <p>
+          Beyond coding, I enjoy contributing to open source projects, writing technical
+          content, and helping others grow in their careers. I'm a strong advocate for
+          knowledge sharing and believe that the best way to learn is to teach.
+        </p>
+      </div>
+
+      <!-- Experience -->
+      <div class="mb-16">
+        <h2 class="text-2xl font-bold tracking-tight mb-6">Experience</h2>
+        <div class="space-y-6">
+          {experience.map((job) => (
+            <Card>
+              <CardHeader>
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                  <div>
+                    <CardTitle>{job.title}</CardTitle>
+                    <CardDescription>{job.company}</CardDescription>
+                  </div>
+                  <Badge variant="outline">{job.period}</Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p class="text-muted-foreground">{job.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="mb-16">
+        <h2 class="text-2xl font-bold tracking-tight mb-6">Education</h2>
+        <div class="grid sm:grid-cols-2 gap-6">
+          {education.map((edu) => (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">{edu.degree}</CardTitle>
+                <CardDescription>{edu.school} &bull; {edu.year}</CardDescription>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <!-- Interests -->
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight mb-6">Interests</h2>
+        <div class="flex flex-wrap gap-3">
+          {interests.map((interest) => (
+            <Badge variant="secondary" className="text-sm py-1.5 px-4">{interest}</Badge>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectCard from '@/components/ProjectCard';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+---
+
+<BaseLayout title="Projects" description="A showcase of my recent projects and work.">
+  <section class="container py-12 md:py-24">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <div class="space-y-4 mb-12">
+        <h1 class="text-4xl font-bold tracking-tight">Projects</h1>
+        <p class="text-xl text-muted-foreground">
+          A selection of projects I've worked on. Each one taught me something new.
+        </p>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((project) => (
+          <ProjectCard
+            client:load
+            title={project.data.title}
+            description={project.data.description}
+            tech={project.data.tech}
+            github={project.data.github}
+            demo={project.data.demo}
+            image={project.data.image}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

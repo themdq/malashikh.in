@@ -1,0 +1,70 @@
+---
+# Traefik IngressRoute for malashikh.in
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: portfolio
+  labels:
+    app: portfolio
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`malashikh.in`) || Host(`www.malashikh.in`)
+      kind: Rule
+      services:
+        - name: portfolio
+          port: 80
+      middlewares:
+        - name: portfolio-compress
+        - name: portfolio-www-redirect
+  tls:
+    certResolver: letsencrypt
+---
+# HTTP to HTTPS redirect
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: portfolio-http-redirect
+  labels:
+    app: portfolio
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`malashikh.in`) || Host(`www.malashikh.in`)
+      kind: Rule
+      middlewares:
+        - name: portfolio-https-redirect
+      services:
+        - name: portfolio
+          port: 80
+---
+# Middleware: HTTPS redirect
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: portfolio-https-redirect
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+# Middleware: www to non-www redirect
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: portfolio-www-redirect
+spec:
+  redirectRegex:
+    regex: ^https://www\.malashikh\.in/(.*)
+    replacement: https://malashikh.in/${1}
+    permanent: true
+---
+# Middleware: Compression
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: portfolio-compress
+spec:
+  compress: {}

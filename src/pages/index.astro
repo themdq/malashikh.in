@@ -1,0 +1,153 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { getCollection } from 'astro:content';
+
+const recentProjects = (await getCollection('projects')).slice(0, 3);
+const recentPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+).slice(0, 3);
+---
+
+<BaseLayout title="Home">
+  <Hero />
+
+  <!-- About Preview Section -->
+  <section class="container py-16 md:py-24">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="space-y-4">
+        <h2 class="text-3xl font-bold tracking-tight">About Me</h2>
+        <p class="text-muted-foreground">
+          I'm a software engineer with a passion for building robust, scalable systems.
+          With experience in cloud infrastructure, Kubernetes, and modern web technologies,
+          I help teams deliver high-quality software solutions.
+        </p>
+        <p class="text-muted-foreground">
+          When I'm not coding, you'll find me exploring new technologies, contributing
+          to open source, or sharing knowledge through technical writing.
+        </p>
+        <a href="/about">
+          <Button variant="outline">Learn More About Me</Button>
+        </a>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-4xl font-bold">5+</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>Years of Experience</CardDescription>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-4xl font-bold">20+</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>Projects Completed</CardDescription>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-4xl font-bold">10+</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>Technologies Mastered</CardDescription>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-4xl font-bold">100%</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>Client Satisfaction</CardDescription>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Projects Section -->
+  <section class="bg-muted/50 py-16 md:py-24">
+    <div class="container">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold tracking-tight">Featured Projects</h2>
+        <a href="/projects">
+          <Button variant="ghost">View All &rarr;</Button>
+        </a>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {recentProjects.map((project) => (
+          <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle>{project.data.title}</CardTitle>
+              <CardDescription>{project.data.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div class="flex flex-wrap gap-2">
+                {project.data.tech.slice(0, 4).map((tech) => (
+                  <Badge variant="secondary">{tech}</Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Blog Posts Section -->
+  <section class="container py-16 md:py-24">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-3xl font-bold tracking-tight">Latest Posts</h2>
+      <a href="/blog">
+        <Button variant="ghost">View All &rarr;</Button>
+      </a>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {recentPosts.map((post) => (
+        <a href={`/blog/${post.slug}`} class="group">
+          <Card className="h-full hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div class="text-sm text-muted-foreground mb-2">
+                {post.data.date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </div>
+              <CardTitle className="group-hover:text-primary transition-colors">
+                {post.data.title}
+              </CardTitle>
+              <CardDescription>{post.data.excerpt}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.slice(0, 3).map((tag) => (
+                  <Badge variant="outline">{tag}</Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-primary text-primary-foreground py-16 md:py-24">
+    <div class="container text-center space-y-6">
+      <h2 class="text-3xl font-bold tracking-tight">Let's Work Together</h2>
+      <p class="max-w-2xl mx-auto text-primary-foreground/80">
+        Have a project in mind? I'm always open to discussing new opportunities
+        and interesting challenges.
+      </p>
+      <a href="/contact">
+        <Button variant="secondary" size="lg">Get in Touch</Button>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
