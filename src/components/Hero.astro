@@ -3,19 +3,8 @@
 
 <section class="container py-24 md:py-32 lg:py-40">
   <div class="flex flex-col items-center text-center space-y-8">
-    <div class="space-y-4 max-w-3xl">
-      <!-- ASCII art for desktop -->
-      <pre class="hidden md:block text-foreground text-xs lg:text-sm leading-tight whitespace-pre font-mono">
-{`
- ____  __  __ ___ _____ ____  ___ ___
-|  _ \\|  \\/  |_ _|_   _|  _ \\|_ _|_ _|
-| | | | |\\/| || |  | | | |_) || | | |
-| |_| | |  | || |  | | |  _ < | | | |
-|____/|_|  |_|___| |_| |_| \\_\\___|___|
-`}
-      </pre>
-      <!-- Mobile fallback -->
-      <h1 class="md:hidden text-4xl font-bold tracking-tighter">
+    <div class="space-y-4">
+      <h1 class="text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] font-bold leading-none hero-outline">
         DMITRII
       </h1>
 
@@ -34,3 +23,13 @@
     </div>
   </div>
 </section>
+
+<style>
+  .hero-outline {
+    font-family: 'Rockwell', 'Rockwell Nova', 'Roboto Slab', 'DejaVu Serif', 'Sitka Small', serif;
+    color: hsl(var(--background));
+    -webkit-text-stroke: 2px hsl(var(--foreground));
+    paint-order: stroke fill;
+    letter-spacing: -0.06em;
+  }
+</style>
