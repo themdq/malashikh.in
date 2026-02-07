@@ -4,7 +4,8 @@ dist
 .gitignore
 .env
 .env.*
-*.md
+README.md
+CLAUDE.md
 .vscode
 .idea
 *.log
