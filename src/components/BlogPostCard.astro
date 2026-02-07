@@ -20,12 +20,12 @@ const formattedDate = date.toLocaleDateString('en-US', {
 ---
 
 <a href={`/blog/${slug}`} class="block group">
-  <Card className="transition-all duration-200 hover:shadow-lg hover:border-primary/50">
+  <Card className="transition-colors hover:border-foreground">
     <CardHeader>
       <div class="flex items-center gap-2 text-sm text-muted-foreground mb-2">
         <time datetime={date.toISOString()}>{formattedDate}</time>
       </div>
-      <CardTitle className="group-hover:text-primary transition-colors">
+      <CardTitle className="group-hover:text-flexoki-cyan transition-colors">
         {title}
       </CardTitle>
       <CardDescription className="text-base">{description}</CardDescription>

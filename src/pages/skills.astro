@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 const skillCategories = [
   {
     name: 'Languages',
-    icon: '🔤',
+    icon: '[lang]',
     skills: [
       { name: 'TypeScript', level: 'expert' as const },
       { name: 'Python', level: 'advanced' as const },
@@ -18,7 +18,7 @@ const skillCategories = [
   },
   {
     name: 'Frontend',
-    icon: '🎨',
+    icon: '[fe]',
     skills: [
       { name: 'React', level: 'expert' as const },
       { name: 'Next.js', level: 'advanced' as const },
@@ -29,7 +29,7 @@ const skillCategories = [
   },
   {
     name: 'Backend',
-    icon: '⚙️',
+    icon: '[be]',
     skills: [
       { name: 'Node.js', level: 'expert' as const },
       { name: 'FastAPI', level: 'advanced' as const },
@@ -40,7 +40,7 @@ const skillCategories = [
   },
   {
     name: 'Cloud & Infrastructure',
-    icon: '☁️',
+    icon: '[cloud]',
     skills: [
       { name: 'Kubernetes', level: 'expert' as const },
       { name: 'Docker', level: 'expert' as const },
@@ -51,7 +51,7 @@ const skillCategories = [
   },
   {
     name: 'DevOps & Tools',
-    icon: '🔧',
+    icon: '[ops]',
     skills: [
       { name: 'Git', level: 'expert' as const },
       { name: 'GitHub Actions', level: 'advanced' as const },
@@ -62,7 +62,7 @@ const skillCategories = [
   },
   {
     name: 'Databases',
-    icon: '🗄️',
+    icon: '[db]',
     skills: [
       { name: 'PostgreSQL', level: 'advanced' as const },
       { name: 'Redis', level: 'advanced' as const },
@@ -85,7 +85,7 @@ const skillCategories = [
       </div>
 
       <!-- Legend -->
-      <div class="mb-8 p-4 bg-muted/50 rounded-lg">
+      <div class="mb-8 p-4 border border-dashed">
         <p class="text-sm text-muted-foreground mb-3">Proficiency Levels:</p>
         <div class="flex flex-wrap gap-3">
           <SkillBadge name="Expert" level="expert" />
@@ -101,7 +101,7 @@ const skillCategories = [
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <span>{category.icon}</span>
+                <span class="text-muted-foreground">{category.icon}</span>
                 {category.name}
               </CardTitle>
             </CardHeader>
@@ -117,7 +117,7 @@ const skillCategories = [
       </div>
 
       <!-- Additional Info -->
-      <div class="mt-12 p-6 bg-muted/50 rounded-lg">
+      <div class="mt-12 p-6 border border-dashed">
         <h2 class="text-xl font-semibold mb-4">Always Learning</h2>
         <p class="text-muted-foreground">
           Technology evolves rapidly, and I believe in continuous learning.

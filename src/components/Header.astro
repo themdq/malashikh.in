@@ -13,10 +13,10 @@ const navItems = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<header class="sticky top-0 z-50 w-full border-b bg-background">
   <div class="container flex h-16 items-center justify-between">
     <a href="/" class="flex items-center space-x-2">
-      <span class="text-xl font-bold">Dmitrii Malashikhin</span>
+      <span class="text-xl font-bold">[dm]</span>
     </a>
 
     <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
@@ -24,8 +24,8 @@ const currentPath = Astro.url.pathname;
         <a
           href={item.href}
           class:list={[
-            'transition-colors hover:text-foreground/80',
-            currentPath === item.href ? 'text-foreground' : 'text-foreground/60',
+            'transition-colors hover:text-flexoki-cyan',
+            currentPath === item.href ? 'text-foreground' : 'text-muted-foreground',
           ]}
         >
           {item.label}
@@ -38,22 +38,10 @@ const currentPath = Astro.url.pathname;
 
       <button
         id="mobile-menu-toggle"
-        class="md:hidden inline-flex items-center justify-center rounded-md p-2 text-foreground hover:bg-accent"
+        class="md:hidden inline-flex items-center justify-center p-2 text-foreground hover:text-flexoki-cyan"
         aria-label="Toggle menu"
       >
-        <svg
-          class="h-6 w-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
+        [=]
       </button>
     </div>
   </div>
@@ -65,10 +53,10 @@ const currentPath = Astro.url.pathname;
         <a
           href={item.href}
           class:list={[
-            'block px-3 py-2 rounded-md text-base font-medium transition-colors',
+            'block px-3 py-2 text-base font-medium transition-colors',
             currentPath === item.href
-              ? 'bg-accent text-foreground'
-              : 'text-foreground/60 hover:bg-accent hover:text-foreground',
+              ? 'text-foreground'
+              : 'text-muted-foreground hover:text-flexoki-cyan',
           ]}
         >
           {item.label}

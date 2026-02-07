@@ -1,3 +1,4 @@
 [submodule "site-content"]
 	path = src/content
 	url = https://github.com/themdq/site-content.git
+	ignore = dirty

@@ -3,7 +3,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { getCollection } from 'astro:content';
 
 const recentProjects = (await getCollection('projects')).slice(0, 3);
@@ -16,7 +15,7 @@ const recentPosts = (await getCollection('blog')).sort(
   <Hero />
 
   <!-- About Preview Section -->
-  <section class="container py-16 md:py-24">
+  <section class="container py-16 md:py-24 border-t border-dashed">
     <div class="grid md:grid-cols-2 gap-12 items-center">
       <div class="space-y-4">
         <h2 class="text-3xl font-bold tracking-tight">About Me</h2>
@@ -29,8 +28,8 @@ const recentPosts = (await getCollection('blog')).sort(
           When I'm not coding, you'll find me exploring new technologies, contributing
           to open source, or sharing knowledge through technical writing.
         </p>
-        <a href="/about">
-          <Button variant="outline">Learn More About Me</Button>
+        <a href="/about" class="inline-block border border-border px-4 py-2 text-sm text-muted-foreground hover:border-foreground hover:text-foreground transition-colors">
+          [learn more]
         </a>
       </div>
       <div class="grid grid-cols-2 gap-4">
@@ -71,17 +70,17 @@ const recentPosts = (await getCollection('blog')).sort(
   </section>
 
   <!-- Recent Projects Section -->
-  <section class="bg-muted/50 py-16 md:py-24">
+  <section class="py-16 md:py-24 border-t border-dashed">
     <div class="container">
       <div class="flex justify-between items-center mb-8">
         <h2 class="text-3xl font-bold tracking-tight">Featured Projects</h2>
-        <a href="/projects">
-          <Button variant="ghost">View All &rarr;</Button>
+        <a href="/projects" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          [view all ->]
         </a>
       </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {recentProjects.map((project) => (
-          <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+          <Card className="transition-colors hover:border-foreground">
             <CardHeader>
               <CardTitle>{project.data.title}</CardTitle>
               <CardDescription>{project.data.description}</CardDescription>
@@ -100,17 +99,17 @@ const recentPosts = (await getCollection('blog')).sort(
   </section>
 
   <!-- Recent Blog Posts Section -->
-  <section class="container py-16 md:py-24">
+  <section class="container py-16 md:py-24 border-t border-dashed">
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-3xl font-bold tracking-tight">Latest Posts</h2>
-      <a href="/blog">
-        <Button variant="ghost">View All &rarr;</Button>
+      <a href="/blog" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        [view all ->]
       </a>
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {recentPosts.map((post) => (
         <a href={`/blog/${post.slug}`} class="group">
-          <Card className="h-full hover:shadow-lg transition-shadow">
+          <Card className="h-full transition-colors hover:border-foreground">
             <CardHeader>
               <div class="text-sm text-muted-foreground mb-2">
                 {post.data.date.toLocaleDateString('en-US', {
@@ -119,7 +118,7 @@ const recentPosts = (await getCollection('blog')).sort(
                   day: 'numeric',
                 })}
               </div>
-              <CardTitle className="group-hover:text-primary transition-colors">
+              <CardTitle className="group-hover:text-flexoki-cyan transition-colors">
                 {post.data.title}
               </CardTitle>
               <CardDescription>{post.data.excerpt}</CardDescription>
@@ -138,16 +137,18 @@ const recentPosts = (await getCollection('blog')).sort(
   </section>
 
   <!-- CTA Section -->
-  <section class="bg-primary text-primary-foreground py-16 md:py-24">
-    <div class="container text-center space-y-6">
-      <h2 class="text-3xl font-bold tracking-tight">Let's Work Together</h2>
-      <p class="max-w-2xl mx-auto text-primary-foreground/80">
-        Have a project in mind? I'm always open to discussing new opportunities
-        and interesting challenges.
-      </p>
-      <a href="/contact">
-        <Button variant="secondary" size="lg">Get in Touch</Button>
-      </a>
+  <section class="py-16 md:py-24 border-t border-dashed">
+    <div class="container">
+      <div class="border border-border p-8 md:p-12 text-center space-y-6">
+        <h2 class="text-3xl font-bold tracking-tight">Let's Work Together</h2>
+        <p class="max-w-2xl mx-auto text-muted-foreground">
+          Have a project in mind? I'm always open to discussing new opportunities
+          and interesting challenges.
+        </p>
+        <a href="/contact" class="inline-block border border-foreground px-6 py-3 text-sm font-medium hover:bg-foreground hover:text-background transition-colors">
+          [get in touch]
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>
