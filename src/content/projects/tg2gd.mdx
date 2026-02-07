@@ -1,0 +1,24 @@
+---
+title: "Infrastructure as Code Platform"
+description: "A comprehensive IaC solution using Terraform modules for multi-cloud deployments with GitOps workflows."
+tech: ["Terraform", "AWS", "GCP", "GitHub Actions", "ArgoCD"]
+github: "https://github.com/malashikhin/iac-platform"
+featured: true
+order: 2
+---
+
+## Overview
+
+A modular Terraform-based infrastructure platform that enables consistent deployments across AWS and GCP with automated GitOps workflows.
+
+## Features
+
+- Reusable Terraform modules for common patterns
+- Multi-cloud support (AWS, GCP)
+- Automated PR reviews for infrastructure changes
+- Cost estimation before apply
+- State management with remote backends
+
+## Architecture
+
+The platform uses a hub-and-spoke model with shared modules and environment-specific configurations, integrated with ArgoCD for Kubernetes deployments.
