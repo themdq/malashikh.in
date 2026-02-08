@@ -38,13 +38,18 @@ const { title, description = 'Portfolio website of Dmitrii Malashikhin - Softwar
 
     <title>{title} | Dmitrii Malashikhin</title>
 
+    <!-- Safari/browser toolbar color -->
+    <meta name="theme-color" content="hsl(48 100% 97%)" />
+
     <!-- Theme initialization (prevent flash) -->
     <script is:inline>
       const theme = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (theme === 'dark' || (!theme && prefersDark)) {
+      const isDark = theme === 'dark' || (!theme && prefersDark);
+      if (isDark) {
         document.documentElement.classList.add('dark');
       }
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? 'hsl(0 3% 6%)' : 'hsl(48 100% 97%)');
     </script>
   </head>
   <body class="min-h-screen antialiased">
