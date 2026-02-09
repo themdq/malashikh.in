@@ -18,7 +18,11 @@ interface FormErrors {
   message?: string;
 }
 
-export default function ContactForm() {
+interface ContactFormProps {
+  accessKey: string;
+}
+
+export default function ContactForm({ accessKey }: ContactFormProps) {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -28,6 +32,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -64,13 +69,35 @@ export default function ContactForm() {
     }
 
     setIsSubmitting(true);
+    setSubmitError('');
 
-    // Simulate form submission (client-side only, no backend)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          botcheck: '',
+        }),
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitError('Something went wrong. Please try again or email me directly.');
+      }
+    } catch {
+      setSubmitError('Something went wrong. Please try again or email me directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -101,6 +128,8 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input
@@ -167,10 +196,9 @@ export default function ContactForm() {
         {isSubmitting ? 'Sending...' : '[send message]'}
       </Button>
 
-      <p className="text-xs text-muted-foreground text-center">
-        This form doesn't actually send emails. For real inquiries, please use
-        the contact information provided.
-      </p>
+      {submitError && (
+        <p className="text-sm text-destructive text-center">{submitError}</p>
+      )}
     </form>
   );
 }

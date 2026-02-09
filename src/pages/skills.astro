@@ -8,19 +8,42 @@ const skillCategories = [
     name: 'Languages',
     icon: '[lang]',
     skills: [
-      { name: 'TypeScript', level: 'expert' as const },
-      { name: 'Python', level: 'advanced' as const },
-      { name: 'Go', level: 'intermediate' as const },
-      { name: 'JavaScript', level: 'expert' as const },
+      { name: 'TypeScript', level: 'advanced' as const },
+      { name: 'Python', level: 'expert' as const },
+      { name: 'C++', level: 'intermediate' as const },
+      { name: 'Kotlin', level: 'intermediate' as const },
+      { name: 'JavaScript', level: 'advanced' as const },
       { name: 'Bash', level: 'advanced' as const },
-      { name: 'SQL', level: 'advanced' as const },
+      { name: 'SQL', level: 'expert' as const },
+    ],
+  },
+  {
+    name: 'Data Engineering',
+    icon: '[de]',
+    skills: [
+      { name: 'Airflow', level: 'expert' as const },
+      { name: 'dbt', level: 'advanced' as const },
+      { name: 'Prefect', level: 'advanced' as const },
+      { name: 'Pandas', level: 'intermediate' as const },
+      { name: 'Spark', level: 'intermediate' as const },
+    ],
+  },
+  {
+    name: 'Backend',
+    icon: '[be]',
+    skills: [
+      { name: 'Node.js', level: 'advanced' as const },
+      { name: 'FastAPI', level: 'expert' as const },
+      { name: 'Express', level: 'advanced' as const },
+      { name: 'GraphQL', level: 'intermediate' as const },
+      { name: 'REST APIs', level: 'expert' as const },
     ],
   },
   {
     name: 'Frontend',
     icon: '[fe]',
     skills: [
-      { name: 'React', level: 'expert' as const },
+      { name: 'React', level: 'advanced' as const },
       { name: 'Next.js', level: 'advanced' as const },
       { name: 'Astro', level: 'advanced' as const },
       { name: 'Tailwind CSS', level: 'expert' as const },
@@ -28,21 +51,22 @@ const skillCategories = [
     ],
   },
   {
-    name: 'Backend',
-    icon: '[be]',
+    name: 'Databases',
+    icon: '[db]',
     skills: [
-      { name: 'Node.js', level: 'expert' as const },
-      { name: 'FastAPI', level: 'advanced' as const },
-      { name: 'Express', level: 'advanced' as const },
-      { name: 'GraphQL', level: 'intermediate' as const },
-      { name: 'REST APIs', level: 'expert' as const },
+      { name: 'PostgreSQL', level: 'expert' as const },
+      { name: 'Redis', level: 'advanced' as const },
+      { name: 'Snowflake', level: 'intermediate' as const },
+      { name: 'MongoDB', level: 'intermediate' as const },
+      { name: 'Elasticsearch', level: 'intermediate' as const },
+      { name: 'Kafka', level: 'advanced' as const },
     ],
   },
   {
     name: 'Cloud & Infrastructure',
     icon: '[cloud]',
     skills: [
-      { name: 'Kubernetes', level: 'expert' as const },
+      { name: 'Kubernetes', level: 'advanced' as const },
       { name: 'Docker', level: 'expert' as const },
       { name: 'AWS', level: 'advanced' as const },
       { name: 'Terraform', level: 'advanced' as const },
@@ -55,21 +79,12 @@ const skillCategories = [
     skills: [
       { name: 'Git', level: 'expert' as const },
       { name: 'GitHub Actions', level: 'advanced' as const },
-      { name: 'ArgoCD', level: 'advanced' as const },
+      { name: 'GitLab CI/CD', level: 'expert' as const },
       { name: 'Prometheus', level: 'intermediate' as const },
       { name: 'Grafana', level: 'intermediate' as const },
     ],
   },
-  {
-    name: 'Databases',
-    icon: '[db]',
-    skills: [
-      { name: 'PostgreSQL', level: 'advanced' as const },
-      { name: 'Redis', level: 'advanced' as const },
-      { name: 'MongoDB', level: 'intermediate' as const },
-      { name: 'Elasticsearch', level: 'intermediate' as const },
-    ],
-  },
+  
 ];
 ---
 
@@ -121,7 +136,7 @@ const skillCategories = [
         <h2 class="text-xl font-semibold mb-4">Always Learning</h2>
         <p class="text-muted-foreground">
           Technology evolves rapidly, and I believe in continuous learning.
-          Currently exploring: Rust, WebAssembly, and AI/ML infrastructure.
+          Currently exploring: AI/ML and cloud infrastructure.
         </p>
       </div>
     </div>
