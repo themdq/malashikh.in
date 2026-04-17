@@ -1,0 +1,59 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+}
+const { projects } = Astro.props;
+
+function deriveKind(tech: string[]): string {
+  const t = tech.map(s => s.toLowerCase());
+  if (t.some(s => s.includes('kubernetes') || s.includes('k8s'))) return 'obs / k8s';
+  if (t.some(s => s.includes('terraform') || s.includes('aws') || s.includes('gcp'))) return 'bot / iac';
+  if (t.some(s => s.includes('django') || s.includes('flask'))) return 'game / web';
+  return 'web / python';
+}
+
+function deriveChord(tech: string[]): string {
+  const t = tech.map(s => s.toLowerCase());
+  const tags: string[] = ['python'];
+  if (t.some(s => s.includes('kubernetes') || s.includes('k8s') || s.includes('prometheus') || s.includes('grafana'))) tags.push('k8s','obs');
+  if (t.some(s => s.includes('terraform') || s.includes('aws') || s.includes('gcp') || s.includes('github actions'))) tags.push('iac','tf');
+  if (t.some(s => s.includes('react') || s.includes('django') || s.includes('tailwind') || s.includes('web'))) tags.push('web');
+  return [...new Set(tags)].join(',');
+}
+---
+
+<div class="project-grid">
+  {projects.map((project) => {
+    const kind = deriveKind(project.data.tech);
+    const chord = deriveChord(project.data.tech);
+    const href = project.data.demo || project.data.github || '#';
+    return (
+      <article
+        class="project"
+        tabindex="0"
+        data-chord={chord}
+        data-facts="stack"
+        data-url={href}
+        onclick={`window.open('${href}','_blank')`}
+      >
+        <div class="p-head">
+          <span>project / {new Date().getFullYear()}</span>
+          <span class="st"><span class="sdot"></span> live</span>
+        </div>
+        <h3 set:html={project.data.title} />
+        <p>{project.data.description}</p>
+        <div class="tags">
+          {project.data.tech.slice(0, 4).map((t) => (
+            <span class="tag">{t}</span>
+          ))}
+        </div>
+        <div class="p-foot">
+          <span>{kind}</span>
+          <span class="go">open&nbsp;→</span>
+        </div>
+      </article>
+    );
+  })}
+</div>

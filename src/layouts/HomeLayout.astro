@@ -1,0 +1,62 @@
+---
+import '../styles/home.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'Dmitrii Malashikhin — Data Engineer',
+  description = 'Data Engineer building reliable ETL end-to-end — from source onboarding and normalization to enrichment, validation and production support.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content={description} />
+  <meta name="generator" content={Astro.generator} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Fonts: Instrument Serif (display) + JetBrains Mono (mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap"
+  />
+
+
+  <!-- OG / SEO -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={Astro.url} />
+  <meta name="theme-color" content="#FFFCF0" />
+
+  <title>{title}</title>
+
+  <!-- Theme flash prevention.
+       The design uses data-dark="true/false" on <html>.
+       The existing site uses the .dark class + localStorage('theme').
+       We bridge both so preference persists across all pages. -->
+  <script is:inline>
+    (function () {
+      var stored = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var dark = stored === 'dark' || (!stored && prefersDark);
+      document.documentElement.dataset.dark = dark ? 'true' : 'false';
+      document.documentElement.dataset.accent = localStorage.getItem('home-accent') || 'espresso';
+      document.documentElement.dataset.density = localStorage.getItem('home-density') || 'comfortable';
+      if (dark) document.documentElement.classList.add('dark');
+    })();
+  </script>
+</head>
+<body>
+  <div class="shell">
+    <slot />
+  </div>
+</body>
+</html>

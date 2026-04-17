@@ -1,156 +1,144 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Hero from '@/components/Hero.astro';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import HomeLayout from '@/layouts/HomeLayout.astro';
+import HomeTopbar from '@/components/home/HomeTopbar.astro';
+import HomeHero from '@/components/home/HomeHero.astro';
+import HomeAbout from '@/components/home/HomeAbout.astro';
+import HomePipeline from '@/components/home/HomePipeline.astro';
+import HomeProjectGrid from '@/components/home/HomeProjectGrid.astro';
+import HomeNowDeploys from '@/components/home/HomeNowDeploys.astro';
+import HomeBlog from '@/components/home/HomeBlog.astro';
+import HomeContact from '@/components/home/HomeContact.astro';
+import HomeFooter from '@/components/home/HomeFooter.astro';
+
+import AsciiPortrait from '@/components/home/AsciiPortrait';
+import HomeTicker from '@/components/home/HomeTicker';
+import HomeInteractions from '@/components/home/HomeInteractions';
+import CommandPalette from '@/components/home/CommandPalette';
+import HomeTerminal from '@/components/home/HomeTerminal';
+import TweaksPanel from '@/components/home/TweaksPanel';
+import KonamiOverlay from '@/components/home/KonamiOverlay';
+
 import { getCollection } from 'astro:content';
 
-const recentProjects = (await getCollection('projects')).slice(0, 3);
-const recentPosts = (await getCollection('blog')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-).slice(0, 3);
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .slice(0, 3);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const recentPosts = allPosts
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+// Site data passed to the terminal component
+const siteData = {
+  meta: {
+    name: 'Dmitrii Malashikhin',
+    role: 'Data Engineer',
+    location: 'New York City',
+    email: 'hello@malashikh.in',
+  },
+  about: {
+    lead: "I'm a data / pipeline engineer with a cybersecurity background. Born in Russia, studied in Saint Petersburg, recently moved to New York City.",
+    paras: [
+      "Most of my work has been around building and operating data integrations end-to-end: researching sources, writing Python connectors, designing ETL, and enriching / validating security data.",
+      "Off-hours: MMA, NBA, swimming, rollerblading, way too much music. Espresso tonic is my happy place.",
+    ],
+    facts: [
+      { k: 'stack', v: 'Python · SQL · Airflow · K8s' },
+      { k: 'fuel', v: 'Espresso tonic · sparkling water' },
+    ],
+  },
+  now: {
+    label: 'apr 2026',
+    items: [
+      { ic: '▶', k: 'listening', v: 'King Krule — Easy Easy', sub: 'on repeat this week' },
+      { ic: '☕', k: 'drinking', v: 'Espresso tonic', sub: 'Café Grumpy, 3rd visit today' },
+      { ic: '✎', k: 'reading', v: 'Designing Data-Intensive Apps', sub: 'ch. 7 — transactions' },
+      { ic: '▲', k: 'building', v: 'a tiny SIEM normalizer', sub: 'weekend project · Python + DuckDB' },
+    ],
+  },
+  projects: featuredProjects.map(p => ({
+    year: String(new Date().getFullYear()),
+    title: p.data.title,
+    desc: p.data.description,
+  })),
+  contact: {
+    links: [
+      { label: 'hello@malashikh.in',   href: 'mailto:hello@malashikh.in',           ext: '✉' },
+      { label: 'github/malashikhin',    href: 'https://github.com/malashikhin',      ext: '↗' },
+      { label: 'linkedin/malashikhin',  href: 'https://linkedin.com/in/malashikhin', ext: '↗' },
+    ],
+  },
+};
+
+const tickerItems = [
+  'currently in NYC 🗽',
+  'reading: Designing Data-Intensive Apps',
+  'espresso tonic — 3:1, no syrup',
+  'open to interesting problems',
+  'NVD sync at 09:00 UTC daily',
+  'uptime 99.98% (last 90d)',
+  'deploys from main, no staging drama',
+  '40.7128°N · 74.0060°W',
+  'digital minimalism since 2021',
+  'MMA · NBA · swim · skate',
+];
 ---
 
-<BaseLayout title="Home">
-  <Hero />
+<HomeLayout>
+  <!-- ── TOPBAR ── -->
+  <HomeTopbar />
 
-  <!-- About Preview Section -->
-  <section class="container py-16 md:py-24 border-t border-dashed">
-    <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div class="space-y-4">
-        <h2 class="text-3xl font-bold tracking-tight">About Me</h2>
-        <p class="text-muted-foreground">
-          I’m a data/pipeline engineer with a cybersecurity background, focused on building reliable ETL and integrations end-to-end —
-  from source onboarding and normalization to enrichment, validation, and production support.
-  I care a lot about automation, data quality, and simple, maintainable systems that teams can operate with confidence.
-        </p>
-        <p class="text-muted-foreground">
-          Outside of work, I’m into MMA and NBA, love swimming and rollerblading, and spend a lot of time with music.
-  I’m also a big coffee person (espresso tonic is my favorite) and a fan of sparkling mineral water.
-  I like books, films, and photography — and I’m a strong believer in digital minimalism and simplifying life through smart automation.
-</p>
-        </p>
-        <a href="/about" class="inline-block border border-border px-4 py-2 text-sm text-muted-foreground hover:border-foreground hover:text-foreground transition-colors">
-          [learn more]
-        </a>
-      </div>
-      <div class="grid grid-cols-2 gap-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-4xl font-bold">3+</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>Years of Experience</CardDescription>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-4xl font-bold">20+</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>Projects Completed</CardDescription>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-4xl font-bold">10+</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>Technologies Mastered</CardDescription>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-4xl font-bold">100%</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>Client Satisfaction</CardDescription>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+  <!-- ── HERO ── -->
+  <section class="hero" id="top">
+    <div class="sidemeta">LAT 40.7128° · LONG 74.0060° · PIPELINE NODE 04</div>
+    <HomeHero />
+    <AsciiPortrait client:load />
   </section>
 
-  <!-- Recent Projects Section -->
-  <section class="py-16 md:py-24 border-t border-dashed">
-    <div class="container">
-      <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold tracking-tight">Featured Projects</h2>
-        <a href="/projects" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
-          [view all ->]
-        </a>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {recentProjects.map((project) => (
-          <Card className="transition-colors hover:border-foreground">
-            <CardHeader>
-              <CardTitle>{project.data.title}</CardTitle>
-              <CardDescription>{project.data.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div class="flex flex-wrap gap-2">
-                {project.data.tech.slice(0, 4).map((tech) => (
-                  <Badge variant="secondary">{tech}</Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+  <!-- ── TICKER + PINBOARD ── -->
+  <HomeTicker client:load items={tickerItems} />
+
+  <!-- ── ABOUT ── -->
+  <HomeAbout />
+
+  <!-- ── PROJECTS ── -->
+  <section class="block" id="projects">
+    <div class="section-head">
+      <div class="num">§ 02</div>
+      <h2>Featured <span class="it">projects.</span></h2>
+      <div class="aux">
+        <a href="/projects" style="border-bottom:1px solid var(--accent)">view all →</a>
       </div>
     </div>
+
+    <HomePipeline />
+    <HomeProjectGrid projects={featuredProjects} />
+    <HomeNowDeploys />
   </section>
 
-  <!-- Recent Blog Posts Section -->
-  <section class="container py-16 md:py-24 border-t border-dashed">
-    <div class="flex justify-between items-center mb-8">
-      <h2 class="text-3xl font-bold tracking-tight">Latest Posts</h2>
-      <a href="/blog" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
-        [view all ->]
-      </a>
-    </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {recentPosts.map((post) => (
-        <a href={`/blog/${post.slug}`} class="group">
-          <Card className="h-full transition-colors hover:border-foreground">
-            <CardHeader>
-              <div class="text-sm text-muted-foreground mb-2">
-                {post.data.date.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </div>
-              <CardTitle className="group-hover:text-flexoki-cyan transition-colors">
-                {post.data.title}
-              </CardTitle>
-              <CardDescription>{post.data.excerpt}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div class="flex flex-wrap gap-2">
-                {post.data.tags.slice(0, 3).map((tag) => (
-                  <Badge variant="outline">{tag}</Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </a>
-      ))}
-    </div>
-  </section>
+  <!-- ── BLOG ── -->
+  <HomeBlog posts={recentPosts} />
 
-  <!-- CTA Section -->
-  <section class="py-16 md:py-24 border-t border-dashed">
-    <div class="container">
-      <div class="border border-border p-8 md:p-12 text-center space-y-6">
-        <h2 class="text-3xl font-bold tracking-tight">Let's Work Together</h2>
-        <p class="max-w-2xl mx-auto text-muted-foreground">
-          Have a project in mind? I'm always open to discussing new opportunities
-          and interesting challenges.
-        </p>
-        <a href="/contact" class="inline-block border border-foreground px-6 py-3 text-sm font-medium hover:bg-foreground hover:text-background transition-colors">
-          [get in touch]
-        </a>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+  <!-- ── CONTACT ── -->
+  <HomeContact />
+
+  <!-- ── FOOTER ── -->
+  <HomeFooter />
+
+  <!-- ── OVERLAYS & INTERACTIONS (React, client-side) ── -->
+  <HomeInteractions client:load />
+  <CommandPalette client:load />
+  <HomeTerminal client:load siteData={siteData} />
+  <TweaksPanel client:load />
+  <KonamiOverlay client:load />
+
+  <!-- ── KEYBOARD LEGEND ── -->
+  <div class="kbd-legend" aria-hidden="true">
+    <span><kbd>⌘K</kbd> palette</span><span class="sep">·</span>
+    <span><kbd>J</kbd>/<kbd>K</kbd> sections</span><span class="sep">·</span>
+    <span><kbd>:</kbd> terminal</span><span class="sep">·</span>
+    <span><kbd>D</kbd> dark</span>
+  </div>
+</HomeLayout>
