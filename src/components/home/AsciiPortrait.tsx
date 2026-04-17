@@ -156,7 +156,7 @@ export default function AsciiPortrait() {
   // Draggable
   useEffect(() => {
     const el = wrapRef.current;
-    if (!el) return;
+    if (!el || window.matchMedia('(pointer: coarse)').matches) return;
     const d = dragRef.current;
 
     function start(e: MouseEvent | TouchEvent) {
@@ -239,7 +239,7 @@ export default function AsciiPortrait() {
         <span>— move your cursor —</span>
         <span className="sig">dm</span>
       </div>
-      <div className="draghint">drag me</div>
+      <div className="draghint" id="portrait-draghint">drag me</div>
     </div>
   );
 }

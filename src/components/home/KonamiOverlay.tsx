@@ -6,6 +6,7 @@ export default function KonamiOverlay() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
     let idx = 0;
     function onKey(e: KeyboardEvent) {
       if ((e.target as HTMLElement).matches('input,textarea')) return;

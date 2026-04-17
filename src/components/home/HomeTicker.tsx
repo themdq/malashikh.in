@@ -64,7 +64,7 @@ export default function HomeTicker({ items }: Props) {
   useEffect(() => {
     const track = trackRef.current;
     const board = boardRef.current;
-    if (!track || !board) return;
+    if (!track || !board || window.matchMedia('(pointer: coarse)').matches) return;
 
     function onPointerDown(e: PointerEvent) {
       const chip = (e.target as HTMLElement).closest<HTMLElement>('span[data-ticker-item]');

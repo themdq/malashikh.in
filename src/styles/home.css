@@ -765,4 +765,35 @@ footer .foot-brand p { margin: 0 0 8px; max-width: 30ch; color: var(--ink-2); fo
   nav.primary { display: none }
   .now-body { grid-template-columns: 1fr }
   .shell { padding: 0 16px 64px }
+  .portrait .draghint { display: none }
+  .pinboard { display: none }
+  .hero .sidemeta { display: none }
+}
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: clamp(44px, 13vw, 72px) }
+  .hero { padding: 28px 0 24px; gap: 24px }
+  .portrait { max-width: 100%; aspect-ratio: 60 / 50; max-height: 260px }
+  .topbar { grid-template-columns: 1fr auto; gap: 12px }
+  .status-chips .chip:not(:first-child) { display: none }
+  .cta { padding: 28px 20px }
+  .cta .side a { min-width: 0; width: 100% }
+  .fact-list .r { grid-template-columns: 90px 1fr }
+  .posts .post { grid-template-columns: 1fr; gap: 6px }
+  .posts .post .date { font-size: 10px }
+  .posts .post .arrow { display: none }
+  footer { grid-template-columns: 1fr }
+  section.block { padding: 48px 0 16px }
+  .section-head { grid-template-columns: auto 1fr }
+  .section-head .aux { display: none }
+}
+
+@media (max-width: 400px) {
+  .hero h1 { font-size: clamp(36px, 11vw, 52px) }
+  .shell { padding: 0 12px 48px }
+  .stat .n { font-size: 40px }
+  .stat .n .u { font-size: 14px }
+  .topbar { grid-template-columns: 1fr }
+  .topbar .status-chips { display: none }
+  .cta .big { font-size: clamp(28px, 9vw, 42px) }
 }
