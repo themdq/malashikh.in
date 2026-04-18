@@ -707,30 +707,6 @@ footer .foot-brand p { margin: 0 0 8px; max-width: 30ch; color: var(--ink-2); fo
 #term .prompt-row input { flex: 1; background: transparent; border: 0; outline: none; font: inherit; color: var(--ink); caret-color: var(--accent) }
 #term .prompt-row .hint { font-size: 10px; color: var(--ink-3); letter-spacing: .1em; text-transform: uppercase }
 
-/* ============================================================
-   TWEAKS PANEL
-   ============================================================ */
-#tweaks-panel {
-  position: fixed; bottom: 20px; right: 20px; width: 280px;
-  background: var(--paper); border: 1px solid var(--ink);
-  font-family: var(--mono); font-size: 11px; z-index: 1000;
-  box-shadow: 6px 6px 0 var(--accent); display: none;
-}
-#tweaks-panel.open { display: block }
-#tweaks-panel header {
-  padding: 8px 12px; background: var(--ink); color: var(--paper);
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
-}
-#tweaks-panel header button { background: transparent; color: var(--paper); border: 0; cursor: pointer; font: inherit }
-#tweaks-panel .tbody { padding: 14px; display: flex; flex-direction: column; gap: 12px }
-#tweaks-panel label { display: flex; flex-direction: column; gap: 6px; color: var(--ink-3) }
-#tweaks-panel .row { display: flex; gap: 6px; flex-wrap: wrap }
-#tweaks-panel .row button {
-  flex: 1; font: inherit; font-size: 10.5px;
-  padding: 6px 8px; background: var(--paper-2); border: 1px solid var(--rule); color: var(--ink-2); cursor: pointer;
-}
-#tweaks-panel .row button.on { background: var(--ink); color: var(--paper); border-color: var(--ink) }
 
 /* ============================================================
    KONAMI OVERLAY

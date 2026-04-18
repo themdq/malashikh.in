@@ -15,7 +15,6 @@ import HomeTicker from '@/components/home/HomeTicker';
 import HomeInteractions from '@/components/home/HomeInteractions';
 import CommandPalette from '@/components/home/CommandPalette';
 import HomeTerminal from '@/components/home/HomeTerminal';
-import TweaksPanel from '@/components/home/TweaksPanel';
 import KonamiOverlay from '@/components/home/KonamiOverlay';
 
 import { getCollection } from 'astro:content';
@@ -131,7 +130,6 @@ const tickerItems = [
   <HomeInteractions client:load />
   <CommandPalette client:load />
   <HomeTerminal client:load siteData={siteData} />
-  <TweaksPanel client:load />
   <KonamiOverlay client:load />
 
   <!-- ── KEYBOARD LEGEND ── -->

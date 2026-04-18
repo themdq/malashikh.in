@@ -38,7 +38,6 @@ export default function CommandPalette() {
     { group: 'Theme',    label: 'Accent → rust',   gl: '●', run: () => setAccent('rust') },
     { group: 'Theme',    label: 'Accent → cyan',   gl: '●', run: () => setAccent('cyan') },
     { group: 'Theme',    label: 'Accent → ink',    gl: '●', run: () => setAccent('ink') },
-    { group: 'Fun',      label: 'Open tweaks',     gl: '⚙', run: () => { close(); const fn = (window as unknown as Record<string, unknown>).__openTweaks; if (typeof fn === 'function') fn(); } },
     { group: 'Fun',      label: 'Clear pinboard',  gl: '✕', run: () => { localStorage.removeItem('dm_pins_v1'); localStorage.removeItem('dm_ticker_removed_v1'); location.reload(); } },
   ];
 
