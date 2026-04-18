@@ -316,9 +316,12 @@ nav.primary a.active .b { color: var(--accent) }
   width: 100vw;
   left: 50%;
   margin-left: -50vw;
+  cursor: grab;
+  user-select: none;
 }
+.ticker:active { cursor: grabbing }
 .ticker .track {
-  display: flex; gap: 40px; animation: slide 42s linear infinite; width: max-content;
+  display: flex; gap: 40px; width: max-content; will-change: transform;
 }
 .ticker .track span {
   display: inline-flex; gap: 12px; align-items: center; white-space: nowrap;
@@ -328,7 +331,6 @@ nav.primary a.active .b { color: var(--accent) }
 .ticker .track span:hover { background: var(--highlight) }
 .ticker .track span.ghost { opacity: .2; pointer-events: none }
 @keyframes slide { to { transform: translateX(-50%) } }
-.ticker:hover .track { animation-play-state: paused }
 
 .pinboard {
   margin-top: 14px; border: 1px dashed var(--rule); background: var(--paper-2);

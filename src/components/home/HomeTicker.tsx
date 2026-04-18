@@ -6,15 +6,18 @@ interface Props {
 
 const PIN_KEY = 'dm_pins_v1';
 const TICK_REMOVED_KEY = 'dm_ticker_removed_v1';
+const LOOP_DURATION_S = 42;
+const SPEED_NORMALIZE_FACTOR = 0.018;
+const MAX_SPEED_MULTIPLIER = 8;
 
 export default function HomeTicker({ items }: Props) {
+  const tickerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const [pins, setPins] = useState<string[]>([]);
   const [removed, setRemoved] = useState<Set<string>>(new Set());
-  const dragRef = useRef<{ chip: HTMLElement | null; text: string; x: number; y: number; clone: HTMLElement | null } | null>(null);
+  const chipDragRef = useRef<{ chip: HTMLElement | null; text: string; x: number; y: number; clone: HTMLElement | null } | null>(null);
 
-  // Load persisted state
   useEffect(() => {
     try {
       const savedPins: string[] = JSON.parse(localStorage.getItem(PIN_KEY) || '[]');
@@ -60,7 +63,93 @@ export default function HomeTicker({ items }: Props) {
     });
   }
 
-  // Drag from ticker to pinboard
+  // JS animation loop replacing CSS animation
+  useEffect(() => {
+    const track = trackRef.current;
+    const ticker = tickerRef.current;
+    if (!track || !ticker) return;
+
+    track.style.animation = 'none';
+
+    let rafId: number;
+    let halfWidth = 0;
+    let defaultSpeed = 0;
+    const xRef = { current: 0 };
+    const speedRef = { current: 0 };
+    let isDragging = false;
+    let lastX = 0;
+    let lastTime = 0;
+
+    function init() {
+      halfWidth = track!.scrollWidth / 2;
+      defaultSpeed = -halfWidth / (LOOP_DURATION_S * 60);
+      if (speedRef.current === 0) speedRef.current = defaultSpeed;
+    }
+
+    function tick() {
+      if (!halfWidth) init();
+
+      if (!isDragging) {
+        speedRef.current += (defaultSpeed - speedRef.current) * SPEED_NORMALIZE_FACTOR;
+      }
+
+      xRef.current += speedRef.current;
+      if (xRef.current <= -halfWidth) xRef.current += halfWidth;
+      if (xRef.current >= 0) xRef.current -= halfWidth;
+
+      track!.style.transform = `translateX(${xRef.current}px)`;
+      rafId = requestAnimationFrame(tick);
+    }
+
+    rafId = requestAnimationFrame(tick);
+
+    function onMarqueeDown(e: PointerEvent) {
+      const chip = (e.target as HTMLElement).closest('[data-ticker-item]');
+      if (chip) return;
+
+      isDragging = true;
+      lastX = e.clientX;
+      lastTime = performance.now();
+      ticker!.style.cursor = 'grabbing';
+      e.preventDefault();
+      try { ticker!.setPointerCapture(e.pointerId); } catch {}
+    }
+
+    function onMarqueeMove(e: PointerEvent) {
+      if (!isDragging) return;
+      const now = performance.now();
+      const dt = now - lastTime;
+      if (dt > 0) {
+        const dx = e.clientX - lastX;
+        const rawSpeed = (dx / dt) * 16;
+        const maxSpeed = Math.abs(defaultSpeed) * MAX_SPEED_MULTIPLIER;
+        speedRef.current = Math.max(-maxSpeed, Math.min(maxSpeed, rawSpeed));
+      }
+      lastX = e.clientX;
+      lastTime = now;
+    }
+
+    function onMarqueeUp() {
+      if (!isDragging) return;
+      isDragging = false;
+      ticker!.style.cursor = '';
+    }
+
+    ticker.addEventListener('pointerdown', onMarqueeDown);
+    ticker.addEventListener('pointermove', onMarqueeMove);
+    ticker.addEventListener('pointerup', onMarqueeUp);
+    ticker.addEventListener('pointercancel', onMarqueeUp);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      ticker.removeEventListener('pointerdown', onMarqueeDown);
+      ticker.removeEventListener('pointermove', onMarqueeMove);
+      ticker.removeEventListener('pointerup', onMarqueeUp);
+      ticker.removeEventListener('pointercancel', onMarqueeUp);
+    };
+  }, []);
+
+  // Chip drag-to-pinboard
   useEffect(() => {
     const track = trackRef.current;
     const board = boardRef.current;
@@ -69,13 +158,13 @@ export default function HomeTicker({ items }: Props) {
     function onPointerDown(e: PointerEvent) {
       const chip = (e.target as HTMLElement).closest<HTMLElement>('span[data-ticker-item]');
       if (!chip) return;
-      dragRef.current = { chip, text: chip.dataset.tickerItem || '', x: e.clientX, y: e.clientY, clone: null };
+      chipDragRef.current = { chip, text: chip.dataset.tickerItem || '', x: e.clientX, y: e.clientY, clone: null };
       e.preventDefault();
-      try { (track as HTMLElement).setPointerCapture(e.pointerId); } catch {}
+      try { track!.setPointerCapture(e.pointerId); } catch {}
     }
 
     function onPointerMove(e: PointerEvent) {
-      const d = dragRef.current;
+      const d = chipDragRef.current;
       if (!d || !board) return;
       const dx = e.clientX - d.x, dy = e.clientY - d.y;
       if (!d.clone && (Math.abs(dx) + Math.abs(dy) > 6)) {
@@ -95,7 +184,7 @@ export default function HomeTicker({ items }: Props) {
     }
 
     function onPointerUp(e: PointerEvent) {
-      const d = dragRef.current;
+      const d = chipDragRef.current;
       if (!d) return;
       if (board) {
         const r = board.getBoundingClientRect();
@@ -105,7 +194,7 @@ export default function HomeTicker({ items }: Props) {
       }
       if (d.clone) d.clone.remove();
       if (d.chip) d.chip.style.opacity = '';
-      dragRef.current = null;
+      chipDragRef.current = null;
     }
 
     track.addEventListener('pointerdown', onPointerDown);
@@ -123,7 +212,7 @@ export default function HomeTicker({ items }: Props) {
 
   return (
     <>
-      <div className="ticker" aria-hidden="true">
+      <div className="ticker" aria-hidden="true" ref={tickerRef}>
         <div className="track" ref={trackRef}>
           {doubled.map((item, i) => (
             <span
