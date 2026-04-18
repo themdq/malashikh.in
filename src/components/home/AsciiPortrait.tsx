@@ -223,24 +223,30 @@ export default function AsciiPortrait() {
   }, []);
 
   return (
-    <div
-      ref={wrapRef}
-      className="portrait"
-      id="portrait"
-      role="img"
-      aria-label="ASCII portrait that reacts to your cursor"
-    >
-      <div className="pcap">
-        <b>portrait.ascii — interactive</b>
-        <div className="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div className="portrait-wrap">
+      <div
+        ref={wrapRef}
+        className="portrait"
+        id="portrait"
+        role="img"
+        aria-label="ASCII portrait that reacts to your cursor"
+      >
+        <div className="pcap">
+          <b>portrait.ascii — interactive</b>
+          <div className="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        </div>
+
+        <pre ref={canvasRef} id="asciiCanvas" aria-hidden="true"></pre>
+        <div className="sigline">
+          <span>— move your cursor —</span>
+          <span className="sig">dm</span>
+        </div>
       </div>
-      
-      <pre ref={canvasRef} id="asciiCanvas" aria-hidden="true"></pre>
-      <div className="sigline">
-        <span>— move your cursor —</span>
-        <span className="sig">dm</span>
+
+      <div className="portrait-secret" aria-hidden="true">
+        <span className="ps-line">// if you found this — hello 👋</span>
+        <span className="ps-line ps-dim">&#35; still figuring things out, one packet at a time</span>
       </div>
-      
     </div>
   );
 }
