@@ -1,0 +1,67 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    name: Build & Type-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  docker:
+    name: Docker Build & Push
+    needs: build
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      tag: ${{ steps.tag.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set image tag
+        id: tag
+        run: echo "value=sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/themdq/malashikh.in:${{ steps.tag.outputs.value }}
+            ghcr.io/themdq/malashikh.in:latest
+
+  deploy:
+    name: Deploy to K8s
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      - name: Patch image tag and apply
+        run: |
+          cd k8s
+          kustomize edit set image portfolio=ghcr.io/themdq/malashikh.in:${{ needs.docker.outputs.tag }}
+          kubectl apply -k .
+      - name: Wait for rollout
+        run: kubectl rollout status deployment/portfolio -n portfolio --timeout=120s
