@@ -1,0 +1,611 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+
+const flexokiBase = [
+  { name: '--paper',     light: '#FFFCF0', dark: '#100F0F', usage: 'Page background' },
+  { name: '--paper-2',   light: '#F2F0E5', dark: '#1C1B1A', usage: 'Secondary bg' },
+  { name: '--paper-3',   light: '#E6E4D9', dark: '#282726', usage: 'Tertiary bg' },
+  { name: '--ink',       light: '#100F0F', dark: '#FFFCF0', usage: 'Primary text' },
+  { name: '--ink-2',     light: '#24231C', dark: '#CECDC3', usage: 'Secondary text' },
+  { name: '--ink-3',     light: '#6F6E69', dark: '#878580', usage: 'Muted text' },
+  { name: '--ink-4',     light: '#B7B5AC', dark: '#575653', usage: 'Very muted' },
+  { name: '--rule',      light: '#CECDC3', dark: '#403E3C', usage: 'Borders, dividers' },
+  { name: '--accent',    light: '#AF3029', dark: '#D14D41', usage: 'Primary accent' },
+  { name: '--tonic',     light: '#24837B', dark: '#3AA99F', usage: 'Alt accent (cyan)' },
+  { name: '--highlight', light: '#FCEEB8', dark: '#402D1A', usage: 'Selection bg' },
+];
+
+const semanticTokens = [
+  { name: 'background',      var: '--background',      tailwind: 'bg-background',      hsl: '48 100% 97%' },
+  { name: 'foreground',      var: '--foreground',      tailwind: 'text-foreground',    hsl: '0 3% 6%' },
+  { name: 'primary',         var: '--primary',         tailwind: 'bg-primary',         hsl: '0 3% 6%' },
+  { name: 'secondary',       var: '--secondary',       tailwind: 'bg-secondary',       hsl: '51 33% 92%' },
+  { name: 'muted',           var: '--muted',           tailwind: 'bg-muted',           hsl: '51 33% 92%' },
+  { name: 'muted-foreground',var: '--muted-foreground',tailwind: 'text-muted-foreground', hsl: '50 3% 42%' },
+  { name: 'border',          var: '--border',          tailwind: 'border',             hsl: '51 21% 79%' },
+  { name: 'destructive',     var: '--destructive',     tailwind: 'bg-destructive',     hsl: '0 73% 41%' },
+];
+
+const flexokiExtended = [
+  { name: 'red',     var: '--flexoki-red' },
+  { name: 'orange',  var: '--flexoki-orange' },
+  { name: 'yellow',  var: '--flexoki-yellow' },
+  { name: 'green',   var: '--flexoki-green' },
+  { name: 'cyan',    var: '--flexoki-cyan' },
+  { name: 'blue',    var: '--flexoki-blue' },
+  { name: 'purple',  var: '--flexoki-purple' },
+  { name: 'magenta', var: '--flexoki-magenta' },
+];
+
+const typeScale = [
+  { size: '10px', usage: 'Labels, chips, uppercase UI',   font: 'mono',  letterSpacing: '0.16em',  transform: 'uppercase' },
+  { size: '12px', usage: 'Nav, captions',                 font: 'mono',  letterSpacing: '0.02em',  transform: 'none' },
+  { size: '14px', usage: 'Body text',                     font: 'mono',  letterSpacing: '0.02em',  transform: 'none' },
+  { size: '24px', usage: 'Card titles',                   font: 'serif', letterSpacing: '-0.01em', transform: 'none' },
+  { size: '28px', usage: 'Project headings',              font: 'serif', letterSpacing: '-0.01em', transform: 'none' },
+  { size: '42px', usage: 'Section h2 (max)',              font: 'serif', letterSpacing: '-0.02em', transform: 'none' },
+  { size: '72px', usage: 'Hero h1 (min)',                 font: 'serif', letterSpacing: '-0.02em', transform: 'none' },
+];
+
+const spacingScale = [4, 8, 12, 16, 24, 32, 48, 72, 96];
+
+const homeComponents = [
+  {
+    name: 'HomeHero',
+    file: 'src/components/home/HomeHero.astro',
+    description: 'Full-width hero with name, role tags, bio, and CTA buttons with keyboard shortcut hints.',
+    anchor: '/#hero',
+  },
+  {
+    name: 'HomeTicker',
+    file: 'src/components/home/HomeTicker.tsx',
+    description: 'Scrolling ticker + interactive pinboard. Pointer-driven speed, drag-to-pin, localStorage persistence.',
+    anchor: '/#ticker',
+  },
+  {
+    name: 'AsciiPortrait',
+    file: 'src/components/home/AsciiPortrait.tsx',
+    description: '72-line ASCII art with mouse-reactive fade, idle sweep animation, draggable with fling physics.',
+    anchor: '/#hero',
+  },
+  {
+    name: 'HomeTerminal',
+    file: 'src/components/home/HomeTerminal.tsx',
+    description: 'In-page command terminal with 11 commands (help, whoami, ls, stack, now, projects, theme, accent…). Opens on `:` or backtick.',
+    anchor: '/#terminal',
+  },
+  {
+    name: 'CommandPalette',
+    file: 'src/components/home/CommandPalette.tsx',
+    description: 'Cmd+K modal with 14 commands across 4 groups (Navigate, Action, Theme, Fun). Search-filtered, keyboard-navigable.',
+    anchor: '/',
+  },
+  {
+    name: 'HomePipeline',
+    file: 'src/components/home/HomePipeline.astro',
+    description: '5-stage data pipeline diagram (source → normalize → enrich → deliver → operate) with color-coded tech tags.',
+    anchor: '/#pipeline',
+  },
+  {
+    name: 'HomeNowDeploys',
+    file: 'src/components/home/HomeNowDeploys.astro',
+    description: '2-panel dashboard: current activities (Now) and auto-generated deploy log from git history.',
+    anchor: '/#now',
+  },
+  {
+    name: 'KonamiOverlay',
+    file: 'src/components/home/KonamiOverlay.tsx',
+    description: 'Modal with personal anecdotes revealed by ↑↑↓↓←→←→BA sequence.',
+    anchor: '/',
+  },
+];
+
+const keyboardShortcuts = [
+  { key: 'j / k',        action: 'Navigate between sections' },
+  { key: 'w',            action: 'Jump to projects' },
+  { key: 'c',            action: 'Jump to contact' },
+  { key: 'd',            action: 'Toggle dark mode' },
+  { key: ': or `',       action: 'Open terminal' },
+  { key: 'Cmd+K',        action: 'Open command palette' },
+  { key: '↑↑↓↓←→←→BA',  action: 'Konami easter egg' },
+];
+---
+
+<BaseLayout title="Design System" description="Visual design language of malashikh.in — tokens, components, and patterns.">
+  <section class="container py-12 md:py-24">
+    <div class="max-w-4xl mx-auto space-y-24">
+
+      <!-- Header -->
+      <div class="space-y-4">
+        <p class="text-xs text-muted-foreground tracking-widest uppercase">/ design</p>
+        <h1 class="text-4xl font-bold tracking-tight">[ design system ]</h1>
+        <p class="text-muted-foreground max-w-2xl leading-relaxed text-sm">
+          The visual language of malashikh.in. Flexoki palette, JetBrains Mono + Instrument Serif,
+          zero border-radius, CSS custom properties, and a sharp functional aesthetic.
+        </p>
+        <nav class="flex flex-wrap gap-x-6 gap-y-2 text-sm border-t pt-4">
+          <a href="#colors"          class="text-muted-foreground hover:text-foreground transition-colors">→ colors</a>
+          <a href="#typography"      class="text-muted-foreground hover:text-foreground transition-colors">→ typography</a>
+          <a href="#spacing"         class="text-muted-foreground hover:text-foreground transition-colors">→ spacing</a>
+          <a href="#components"      class="text-muted-foreground hover:text-foreground transition-colors">→ components</a>
+          <a href="#home-components" class="text-muted-foreground hover:text-foreground transition-colors">→ home components</a>
+          <a href="#patterns"        class="text-muted-foreground hover:text-foreground transition-colors">→ patterns</a>
+        </nav>
+      </div>
+
+      <!-- 01 COLORS -->
+      <div id="colors" class="space-y-12">
+        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">01 / Colors</h2>
+
+        <!-- Semantic tokens -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Semantic Tokens</h3>
+          <p class="text-xs text-muted-foreground">
+            CSS custom properties from <code class="bg-muted px-1 py-0.5">global.css</code>. Invert in dark mode.
+          </p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {semanticTokens.map(token => (
+              <div class="space-y-2">
+                <div class="h-14 w-full border" style={`background: hsl(var(${token.var}));`}></div>
+                <div class="text-xs space-y-0.5">
+                  <p class="font-medium">{token.name}</p>
+                  <p class="text-muted-foreground font-mono text-[10px]">{token.var}</p>
+                  <p class="text-muted-foreground font-mono text-[10px]">{token.hsl}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Flexoki extended -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Flexoki Extended</h3>
+          <p class="text-xs text-muted-foreground">
+            8 accent colors in <code class="bg-muted px-1 py-0.5">global.css</code>. Available as Tailwind utilities
+            (<code class="bg-muted px-1 py-0.5">text-flexoki-cyan</code>, <code class="bg-muted px-1 py-0.5">bg-flexoki-red</code> …).
+            Shift lighter in dark mode.
+          </p>
+          <div class="grid grid-cols-4 sm:grid-cols-8 gap-3">
+            {flexokiExtended.map(color => (
+              <div class="space-y-2">
+                <div class="h-10 w-full" style={`background: hsl(var(${color.var}));`}></div>
+                <p class="text-[10px] font-medium">{color.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Flexoki base (home.css) -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Flexoki Base Palette</h3>
+          <p class="text-xs text-muted-foreground">
+            Defined in <code class="bg-muted px-1 py-0.5">home.css</code> exclusively for the homepage.
+            Shown here with hardcoded hex values — light on left, dark on right.
+          </p>
+          <div class="space-y-2">
+            {flexokiBase.map(token => (
+              <div class="grid items-center gap-3 text-xs" style="grid-template-columns: 160px 1fr auto auto auto;">
+                <span class="font-mono text-muted-foreground">{token.name}</span>
+                <span class="text-muted-foreground hidden sm:block">{token.usage}</span>
+                <div class="h-7 w-7 shrink-0 border" style={`background: ${token.light};`}></div>
+                <code class="text-muted-foreground hidden sm:block w-20">{token.light}</code>
+                <div class="flex items-center gap-2">
+                  <div class="h-7 w-7 shrink-0 border border-muted" style={`background: ${token.dark};`}></div>
+                  <code class="text-muted-foreground hidden sm:block w-20">{token.dark}</code>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 TYPOGRAPHY -->
+      <div id="typography" class="space-y-12">
+        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">02 / Typography</h2>
+
+        <!-- Font families -->
+        <div class="space-y-6">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Font Families</h3>
+          <div class="space-y-6">
+            <div class="space-y-2 border-l-2 border-foreground pl-5">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Monospace — JetBrains Mono</p>
+              <p class="text-xl font-mono">The quick brown fox jumps over the lazy dog.</p>
+              <p class="text-xs text-muted-foreground">
+                Body, labels, UI, code, nav, captions. <code class="bg-muted px-1">font-feature-settings: "ss01" "cv11"</code>
+              </p>
+            </div>
+            <div class="space-y-2 border-l-2 border-foreground pl-5">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Serif — Instrument Serif</p>
+              <p class="text-xl" style="font-family: 'Instrument Serif', 'Times New Roman', serif; font-style: italic;">The quick brown fox jumps over the lazy dog.</p>
+              <p class="text-xs text-muted-foreground">
+                Display headings, hero, section titles, project names. Italic for decorative emphasis.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Type scale -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Type Scale</h3>
+          <div class="space-y-5 overflow-x-hidden">
+            {typeScale.map(step => (
+              <div class="flex items-baseline gap-4">
+                <span class="text-[10px] text-muted-foreground w-10 shrink-0 tabular-nums">{step.size}</span>
+                <p
+                  style={`font-size:${step.size};font-family:${step.font==='serif'?"'Instrument Serif','Times New Roman',serif":"'JetBrains Mono',monospace"};letter-spacing:${step.letterSpacing};text-transform:${step.transform};line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 8rem);`}
+                >Aa — {step.usage}</p>
+                <span class="text-[10px] text-muted-foreground shrink-0 hidden sm:block ml-auto">{step.usage}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Letter spacing -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Letter Spacing</h3>
+          <div class="space-y-3 text-sm">
+            {[
+              { em: '−0.02em', cls: 'tracking-[-0.02em]',  label: 'Display headings, hero title' },
+              { em: '0em',     cls: '',                     label: 'Body text default' },
+              { em: '0.02em',  cls: 'tracking-[0.02em]',   label: 'Body text, small labels' },
+              { em: '0.08em',  cls: 'tracking-[0.08em]',   label: 'Nav links, UI labels' },
+              { em: '0.16em',  cls: 'tracking-[0.16em] uppercase text-xs', label: 'Section labels (uppercase)' },
+            ].map(row => (
+              <div class="flex items-center gap-4">
+                <span class="text-[10px] text-muted-foreground w-20 shrink-0">{row.em}</span>
+                <p class={row.cls}>The quick brown fox</p>
+                <span class="text-[10px] text-muted-foreground hidden sm:block ml-auto">{row.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Line height -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Line Height</h3>
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <p class="text-[10px] text-muted-foreground">0.92 — Headings</p>
+              <p class="border p-4" style="line-height:0.92;font-size:22px;font-family:'Instrument Serif',serif;">
+                Display heading with tight line height stacked
+              </p>
+            </div>
+            <div class="space-y-2">
+              <p class="text-[10px] text-muted-foreground">1.55 — Body</p>
+              <p class="border p-4 text-sm" style="line-height:1.55;">
+                Body text with comfortable reading line height. Spacing between lines improves legibility for long-form content.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 SPACING -->
+      <div id="spacing" class="space-y-12">
+        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">03 / Spacing & Layout</h2>
+
+        <!-- Scale -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Spacing Scale</h3>
+          <div class="space-y-3">
+            {spacingScale.map(size => (
+              <div class="flex items-center gap-4">
+                <span class="text-[10px] text-muted-foreground w-10 shrink-0 tabular-nums">{size}px</span>
+                <div class="bg-foreground h-3" style={`width:${size}px;min-width:${size}px;`}></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Container -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Container</h3>
+          <div class="border border-dashed p-4 text-xs">
+            {[
+              ['max-width',         '1240px'],
+              ['horizontal padding','32px'],
+              ['border-radius',     '0px (enforced everywhere)'],
+            ].map(([k, v]) => (
+              <div class="flex justify-between py-1.5 border-b border-dashed last:border-0">
+                <span class="text-muted-foreground">{k}</span>
+                <code>{v}</code>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Grid patterns -->
+        <div class="space-y-6">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Common Grid Patterns</h3>
+          <div class="space-y-6">
+            {[
+              { label: 'Hero',      cols: '1.2fr 1fr',        cells: ['1.2fr', '1fr'] },
+              { label: 'Projects',  cols: 'repeat(3, 1fr)',   cells: ['1fr', '1fr', '1fr'] },
+            ].map(({ label, cols, cells }) => (
+              <div class="space-y-2">
+                <p class="text-[10px] text-muted-foreground">
+                  {label} — <code class="bg-muted px-1">grid-template-columns: {cols}</code>
+                </p>
+                <div class="border border-dashed" style={`display:grid;grid-template-columns:${cols};height:36px;`}>
+                  {cells.map((cell, i) => (
+                    <div class={`flex items-center justify-center text-[10px] text-muted-foreground ${i < cells.length - 1 ? 'border-r border-dashed' : ''}`}>{cell}</div>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div class="space-y-2">
+              <p class="text-[10px] text-muted-foreground">
+                Blog posts — <code class="bg-muted px-1">grid-template-columns: 110px 1fr auto</code>
+              </p>
+              <div class="border border-dashed" style="display:grid;grid-template-columns:110px 1fr auto;height:36px;">
+                <div class="border-r border-dashed flex items-center justify-center text-[10px] text-muted-foreground">110px</div>
+                <div class="border-r border-dashed flex items-center justify-center text-[10px] text-muted-foreground">1fr</div>
+                <div class="flex items-center justify-center text-[10px] text-muted-foreground px-4">auto</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 COMPONENTS -->
+      <div id="components" class="space-y-12">
+        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">04 / Components</h2>
+
+        <!-- Button -->
+        <div class="space-y-6">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Button</h3>
+          <div class="space-y-4">
+            <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Variants</p>
+            <div class="flex flex-wrap gap-3">
+              <Button>default</Button>
+              <Button variant="outline">outline</Button>
+              <Button variant="secondary">secondary</Button>
+              <Button variant="ghost">ghost</Button>
+              <Button variant="destructive">destructive</Button>
+              <Button variant="link">link</Button>
+            </div>
+            <p class="text-[10px] text-muted-foreground uppercase tracking-widest mt-4">Sizes</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <Button size="sm">sm</Button>
+              <Button>default</Button>
+              <Button size="lg">lg</Button>
+              <Button size="icon">⌘</Button>
+            </div>
+          </div>
+          <pre class="bg-muted p-4 text-xs overflow-x-auto"><code>{'<Button variant="outline" size="sm">Click me</Button>'}</code></pre>
+        </div>
+
+        <!-- Badge -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Badge</h3>
+          <div class="flex flex-wrap gap-3">
+            <Badge>default</Badge>
+            <Badge variant="secondary">secondary</Badge>
+            <Badge variant="destructive">destructive</Badge>
+            <Badge variant="outline">outline</Badge>
+          </div>
+          <pre class="bg-muted p-4 text-xs overflow-x-auto"><code>{'<Badge variant="secondary">TypeScript</Badge>'}</code></pre>
+        </div>
+
+        <!-- Card -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Card</h3>
+          <div class="max-w-sm">
+            <Card>
+              <CardHeader>
+                <CardTitle>Project Alpha</CardTitle>
+                <CardDescription>Real-time data enrichment pipeline</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p class="text-sm text-muted-foreground">A fully managed ingestion layer that normalises and routes events to downstream consumers.</p>
+              </CardContent>
+              <CardFooter className="flex gap-2">
+                <Badge variant="secondary">Python</Badge>
+                <Badge variant="secondary">Kafka</Badge>
+                <Badge variant="secondary">k8s</Badge>
+              </CardFooter>
+            </Card>
+          </div>
+          <pre class="bg-muted p-4 text-xs overflow-x-auto"><code>{`<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Subtitle</CardDescription>
+  </CardHeader>
+  <CardContent>Content</CardContent>
+  <CardFooter>Footer</CardFooter>
+</Card>`}</code></pre>
+        </div>
+
+        <!-- Form controls -->
+        <div class="space-y-6">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Form Controls</h3>
+          <div class="grid sm:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <Label htmlFor="ds-input">Name</Label>
+                <Input id="ds-input" placeholder="Dmitrii Malashikhin" />
+              </div>
+              <div class="space-y-2">
+                <Label htmlFor="ds-disabled">Disabled</Label>
+                <Input id="ds-disabled" placeholder="Not editable" disabled />
+              </div>
+              <div class="space-y-2">
+                <Label htmlFor="ds-error" className="text-destructive">Email (error state)</Label>
+                <Input id="ds-error" placeholder="bad@input" className="border-destructive" />
+              </div>
+            </div>
+            <div class="space-y-2">
+              <Label htmlFor="ds-textarea">Message</Label>
+              <Textarea id="ds-textarea" placeholder="Type your message…" className="min-h-[120px]" />
+            </div>
+          </div>
+          <pre class="bg-muted p-4 text-xs overflow-x-auto"><code>{`<Label htmlFor="email">Email</Label>
+<Input id="email" placeholder="you@example.com" />
+
+{/* Error state */}
+<Input className="border-destructive" />`}</code></pre>
+        </div>
+      </div>
+
+      <!-- 05 HOME COMPONENTS -->
+      <div id="home-components" class="space-y-8">
+        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">05 / Home Components</h2>
+        <p class="text-sm text-muted-foreground">
+          Interactive showcase components used exclusively on the homepage (<code class="bg-muted px-1 py-0.5">/</code>).
+          They use the Flexoki base palette from <code class="bg-muted px-1 py-0.5">src/styles/home.css</code>.
+        </p>
+        <div class="space-y-3">
+          {homeComponents.map(comp => (
+            <div class="border border-dashed p-4 space-y-1.5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="font-medium text-sm">{comp.name}</p>
+                  <p class="text-[10px] text-muted-foreground font-mono mt-0.5">{comp.file}</p>
+                </div>
+                <a href={comp.anchor} class="text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0">
+                  see live →
+                </a>
+              </div>
+              <p class="text-xs text-muted-foreground">{comp.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 06 PATTERNS -->
+      <div id="patterns" class="space-y-12">
+        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">06 / Interaction Patterns</h2>
+
+        <!-- Keyboard shortcuts -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Keyboard Shortcuts (Homepage)</h3>
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="border-b">
+                <th class="text-left py-2 pr-8 font-medium text-xs text-muted-foreground uppercase tracking-widest">Key</th>
+                <th class="text-left py-2 font-medium text-xs text-muted-foreground uppercase tracking-widest">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {keyboardShortcuts.map(s => (
+                <tr class="border-b border-dashed">
+                  <td class="py-2 pr-8">
+                    <kbd class="bg-muted border px-2 py-0.5 text-xs font-mono">{s.key}</kbd>
+                  </td>
+                  <td class="py-2 text-sm text-muted-foreground">{s.action}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Hover patterns -->
+        <div class="space-y-6">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Hover Patterns</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-6 flex-wrap">
+              <a href="#" class="border p-3 text-sm block transition-all duration-150 hover:border-foreground hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[2px_2px_0_0_hsl(var(--foreground))]">
+                Translate + shadow
+              </a>
+              <code class="text-xs text-muted-foreground">translate(-2,-2) + box-shadow foreground</code>
+            </div>
+            <div class="flex items-center gap-6 flex-wrap">
+              <a href="#" class="border border-border p-3 text-sm block transition-colors hover:border-foreground">
+                Border shift
+              </a>
+              <code class="text-xs text-muted-foreground">hover:border-foreground</code>
+            </div>
+            <div class="flex items-center gap-6 flex-wrap">
+              <a href="#" class="p-3 text-sm block transition-all duration-150 hover:pl-6">
+                → Left-pad slide
+              </a>
+              <code class="text-xs text-muted-foreground">hover:padding-left (blog post rows)</code>
+            </div>
+            <div class="flex items-center gap-6 flex-wrap">
+              <a href="#" class="p-3 text-sm block transition-colors hover:text-flexoki-cyan">
+                Color shift → cyan
+              </a>
+              <code class="text-xs text-muted-foreground">hover:text-flexoki-cyan</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Focus style -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Focus Style</h3>
+          <p class="text-xs text-muted-foreground">Tab to see each style in action.</p>
+          <div class="flex flex-wrap gap-12">
+            <div class="space-y-2">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Global pages — ring</p>
+              <a href="#" class="text-sm underline">Tab to focus me</a>
+            </div>
+            <div class="space-y-2">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Homepage — brackets</p>
+              <a href="#" class="text-sm underline ds-bracket-focus">Tab to focus me</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dark mode -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Dark Mode</h3>
+          <div class="border border-dashed p-4 text-xs">
+            {[
+              ['Strategy',                'class (not prefers-color-scheme)'],
+              ['Toggle target',           'document.documentElement.classList'],
+              ['Persistence',             "localStorage key: 'theme'"],
+              ['Meta theme-color (light)','hsl(48 100% 97%)'],
+              ['Meta theme-color (dark)', 'hsl(0 3% 6%)'],
+            ].map(([k, v]) => (
+              <div class="flex justify-between py-1.5 border-b border-dashed last:border-0">
+                <span class="text-muted-foreground">{k}</span>
+                <code>{v}</code>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Selection -->
+        <div class="space-y-4">
+          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Text Selection</h3>
+          <p class="text-sm ds-selection-demo border border-dashed p-4">
+            Select this text to see the custom selection style.
+            Uses <code>--primary</code> background and <code>--primary-foreground</code> text color.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .ds-bracket-focus:focus-visible {
+    outline: none;
+    position: relative;
+  }
+  .ds-bracket-focus:focus-visible::before {
+    content: "[";
+    position: absolute;
+    left: -0.7em;
+    color: hsl(var(--flexoki-cyan));
+  }
+  .ds-bracket-focus:focus-visible::after {
+    content: "]";
+    position: absolute;
+    right: -0.7em;
+    color: hsl(var(--flexoki-cyan));
+  }
+
+  .ds-selection-demo::selection,
+  .ds-selection-demo *::selection {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+</style>

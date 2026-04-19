@@ -2,27 +2,14 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ContactForm from '@/components/ContactForm';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { social, contactPage } from '@/data/site';
 
-const contactInfo = [
-  {
-    title: 'Email',
-    value: 'dmitrii@malashikh.in',
-    href: 'mailto:dmitrii@malashikh.in',
-    label: '[email]',
-  },
-  {
-    title: 'GitHub',
-    value: '@themdq',
-    href: 'https://github.com/themdq',
-    label: '[github]',
-  },
-  {
-    title: 'LinkedIn',
-    value: '/in/themdq',
-    href: 'https://linkedin.com/in/themdq',
-    label: '[linkedin]',
-  },
-];
+const contactLinks = social.map(s => ({
+  title: s.name.charAt(0).toUpperCase() + s.name.slice(1),
+  value: s.label,
+  href: s.href,
+  label: `[${s.name}]`,
+}));
 ---
 
 <BaseLayout title="Contact" description="Get in touch with me.">
@@ -47,7 +34,7 @@ const contactInfo = [
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ContactForm client:load accessKey="cdccb814-7566-4efc-a93b-3a0fd5f9ddfc" />
+              <ContactForm client:load accessKey={contactPage.form.accessKey} />
             </CardContent>
           </Card>
         </div>
@@ -57,7 +44,7 @@ const contactInfo = [
           <div>
             <h2 class="text-xl font-semibold mb-4">Other Ways to Connect</h2>
             <div class="space-y-4">
-              {contactInfo.map((info) => (
+              {contactLinks.map((info) => (
                 <a
                   href={info.href}
                   target={info.href.startsWith('mailto') ? undefined : '_blank'}
@@ -77,8 +64,7 @@ const contactInfo = [
           <div class="p-6 border border-dashed">
             <h3 class="font-semibold mb-2">Response Time</h3>
             <p class="text-sm text-muted-foreground">
-              I typically respond to messages within 24-48 hours.
-              For urgent matters, please reach out via email directly.
+              {contactPage.responseTime}
             </p>
           </div>
         </div>
