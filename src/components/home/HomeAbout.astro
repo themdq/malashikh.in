@@ -1,4 +1,5 @@
 ---
+import { about } from '@/data/site';
 ---
 <section class="block" id="about">
   <div class="section-head">
@@ -9,60 +10,29 @@
 
   <div class="about">
     <div class="prose">
-      <p>
-        I'm a <b>data / pipeline engineer</b> with a cybersecurity background.
-        Born in the south of Russia, studied in Saint Petersburg, and
-        <span class="hl">recently moved to New York City</span> after winning the Green Card lottery — which
-        still feels a bit like a packet that somehow made it through every firewall.
-      </p>
-      <p>
-        Most of my work has been around building and operating data integrations end-to-end: researching sources,
-        writing Python connectors, designing ETL, and enriching / validating security data (including work with
-        <a href="https://nvd.nist.gov" class="inlink" target="_blank" rel="noopener">NVD</a>).
-        I keep systems stable with solid CI/CD and pragmatic automation.
-      </p>
-      <p>
-        Off-hours: MMA, NBA, swimming, rollerblading, way too much music.
-        <span class="hl">Espresso tonic</span> is my happy place. I read, watch films, and shoot photos.
-        Digital minimalism — fewer apps, more intent — is a quiet obsession.
-      </p>
+      {about.bio.paras.map(p => <p set:html={p} />)}
     </div>
 
     <aside class="fact-card" aria-label="Quick facts">
       <h4><span>//</span> quick_facts.yml <span>v1</span></h4>
       <div class="fact-list">
-        <div class="r"><div class="k">location</div><div class="v">New York City <span class="sub">(moved '25)</span></div></div>
-        <div class="r"><div class="k">time_zone</div><div class="v">America/New_York</div></div>
-        <div class="r"><div class="k">role</div><div class="v">Data Engineer <span class="sub">· ETL · security data</span></div></div>
-        <div class="r" data-fact="stack"><div class="k">stack</div><div class="v">Python · SQL · Airflow · K8s</div></div>
-        <div class="r"><div class="k">fuel</div><div class="v">Espresso tonic · sparkling water</div></div>
-        <div class="r" data-fact="off_hours"><div class="k">off_hours</div><div class="v">MMA · NBA · swim · skate</div></div>
-        <div class="r"><div class="k">believes_in</div><div class="v">Digital minimalism</div></div>
+        {about.facts.map(f => (
+          <div class="r" data-fact={f.k}>
+            <div class="k">{f.k}</div>
+            <div class="v">{f.v}{f.sub && <span class="sub"> {f.sub}</span>}</div>
+          </div>
+        ))}
       </div>
     </aside>
   </div>
 
-  <!-- Stats -->
   <div class="stats" aria-label="At a glance">
-    <div class="stat" tabindex="0">
-      <div class="n" data-count="3">0<span class="u">+</span></div>
-      <div class="l">Years in production</div>
-      <div class="sl">since 2022 · ETL &amp; security data</div>
-    </div>
-    <div class="stat" tabindex="0">
-      <div class="n" data-count="20">0<span class="u">+</span></div>
-      <div class="l">Pipelines shipped</div>
-      <div class="sl">connectors · normalizers · validators</div>
-    </div>
-    <div class="stat" tabindex="0">
-      <div class="n" data-count="10">0<span class="u">+</span></div>
-      <div class="l">Technologies</div>
-      <div class="sl">Python · SQL · K8s · Terraform</div>
-    </div>
-    <div class="stat" tabindex="0">
-      <div class="n" data-count="2">0<span class="u">M</span></div>
-      <div class="l">Records/day peak</div>
-      <div class="sl">across vulnerability feeds</div>
-    </div>
+    {about.stats.map(s => (
+      <div class="stat" tabindex="0">
+        <div class="n" data-count={s.n}>0<span class="u">{s.u}</span></div>
+        <div class="l">{s.label}</div>
+        <div class="sl">{s.sub}</div>
+      </div>
+    ))}
   </div>
 </section>

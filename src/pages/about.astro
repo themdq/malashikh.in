@@ -2,48 +2,10 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-
-const experience = [
-  {
-    title: 'Data Engineer',
-    company: 'R-Vision',
-    period: 'Oct 2023 - Jan 2026',
-    description: 'Owned end-to-end vulnerability data feeds for a security scanner: source research and onboarding, ETL pipelines, enrichment across multiple vulnerability databases (incl. NVD), and validation in product. Partnered with customers, wrote automation scripts and developer tools (VS Code / PyCharm / Chrome extensions), improved CI/CD, reviewed code, mentored junior engineers, and maintained an internal knowledge base.',
-  },
-  {
-    title: 'Data Engineer',
-    company: 'Datagile',
-    period: 'Aug 2022 - Oct 2023',
-    description: 'Built and maintained SIEM normalization rules: onboarded and analyzed log sources, implemented and tested parsing/normalization, and collaborated with analysts on downstream correlation use cases. Wrote Python connectors for non-standard sources, produced technical documentation for integrations, rotated on technical support, and automated routine workflows with Python while improving CI/CD.',
-  },
-];
-
-const education = [
-  {
-    degree: 'Master in Information Systems',
-    school: 'Admiral Makarov State University',
-    year: '2022 - 2024',
-  },
-  {
-    degree: 'Bachelor in Computer Science',
-    school: 'Admiral Makarov State University',
-    year: '2018 - 2022',
-  },
-];
-
-const interests = [
-  'Cybersecurity data pipelines',
-  'ETL & data quality',
-  'Automation & developer tooling',
-  'Digital minimalism',
-  'MMA & NBA',
-  'Swimming & rollerblading',
-  'Coffee',
-  'Music & photography',
-];
+import { meta, about, experience, education } from '@/data/site';
 ---
 
-<BaseLayout title="About" description="Learn more about Dmitrii Malashikhin - background, experience, and interests.">
+<BaseLayout title="About" description={`Learn more about ${meta.name} - background, experience, and interests.`}>
   <section class="container py-12 md:py-24">
     <div class="max-w-4xl mx-auto">
       <!-- Header -->
@@ -56,22 +18,7 @@ const interests = [
 
       <!-- Bio -->
       <div class="prose prose-neutral dark:prose-invert max-w-none mb-16">
-        <p>
-          I’m Dmitrii Malashikhin — a data/pipeline engineer with 3+ years of experience in cybersecurity products.
-  I was born in the south of Russia, studied in Saint Petersburg, and recently moved to New York City after winning the Green Card lottery.
-        </p>
-        <br>
-        <p>
-          Most of my work has been around building and operating data integrations end-to-end: researching sources, writing Python connectors,
-  designing ETL pipelines, enriching and validating security data (including work with NVD), and keeping systems stable with solid CI/CD
-  and pragmatic automation.
-        </p>
-        <br>
-        <p>
-           Outside of work, I’m into MMA and NBA, love swimming and rollerblading, and spend way too much time exploring music.
-  I’m a coffee person (espresso tonic is my favorite) and a big fan of mineral water.
-  I also enjoy books, films, and photography — and I’m a strong believer in digital minimalism and simplifying life through smart automation.
-        </p>
+        {about.prose.map(p => <><p>{p}</p><br /></>)}
       </div>
 
       <!-- Experience -->
@@ -116,7 +63,7 @@ const interests = [
       <div>
         <h2 class="text-2xl font-bold tracking-tight mb-6">Interests</h2>
         <div class="flex flex-wrap gap-3">
-          {interests.map((interest) => (
+          {about.interests.map((interest) => (
             <Badge variant="secondary" className="text-sm py-1.5 px-4">{interest}</Badge>
           ))}
         </div>

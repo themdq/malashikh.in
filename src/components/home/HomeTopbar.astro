@@ -1,26 +1,26 @@
 ---
+import { meta, nav } from '@/data/site';
 ---
 <header class="topbar" role="banner">
   <a href="/" class="brand" aria-label="Home">
-    <div class="mark" aria-hidden="true">dm</div>
+    <div class="mark" aria-hidden="true">{meta.handle}</div>
     <div>
-      <div>malashikh.in</div>
-      <div class="meta">v2.5 · refreshed Apr 2026</div>
+      <div>{meta.domain}</div>
+      <div class="meta">{meta.version} · refreshed {meta.refreshed}</div>
     </div>
   </a>
 
   <nav class="primary" role="navigation" aria-label="Primary">
-    <a href="/" class="active"><span class="b">[</span>home<span class="b">]</span></a>
-    <a href="/about"><span class="b">[</span>about<span class="b">]</span></a>
-    <a href="/projects"><span class="b">[</span>projects<span class="b">]</span></a>
-    <a href="/skills"><span class="b">[</span>skills<span class="b">]</span></a>
-    <a href="/blog"><span class="b">[</span>blog<span class="b">]</span></a>
-    <a href="/contact"><span class="b">[</span>contact<span class="b">]</span></a>
+    {nav.map(item => (
+      <a href={item.href} class={item.href === '/' ? 'active' : undefined}>
+        <span class="b">[</span>{item.label.toLowerCase()}<span class="b">]</span>
+      </a>
+    ))}
   </nav>
 
   <div class="status-chips">
     <span class="chip"><span class="dot live"></span><span>open&nbsp;to&nbsp;work</span></span>
-    <span class="chip" title="Local time in New York" id="localtime">
+    <span class="chip" title={`Local time in ${meta.location}`} id="localtime">
       <span class="dot"></span>
       <span>NYC&nbsp;—&nbsp;<span id="timeval">—</span></span>
     </span>

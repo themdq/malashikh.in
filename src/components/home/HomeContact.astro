@@ -1,4 +1,5 @@
 ---
+import { social } from '@/data/site';
 ---
 <section class="block" id="contact" style="padding-top:48px">
   <div class="section-head">
@@ -16,18 +17,11 @@
       </div>
     </div>
     <div class="side">
-      <a href="mailto:hello@malashikh.in">
-        <span>hello@malashikh.in</span><span class="ext">✉</span>
-      </a>
-      <a href="https://github.com/malashikhin" target="_blank" rel="noopener">
-        <span>github/malashikhin</span><span class="ext">↗</span>
-      </a>
-      <a href="https://linkedin.com/in/malashikhin" target="_blank" rel="noopener">
-        <span>linkedin/malashikhin</span><span class="ext">↗</span>
-      </a>
-      <a href="https://t.me/dm" target="_blank" rel="noopener">
-        <span>telegram/@dm</span><span class="ext">↗</span>
-      </a>
+      {social.map(s => (
+        <a href={s.href} target={s.href.startsWith('mailto') ? undefined : '_blank'} rel={s.href.startsWith('mailto') ? undefined : 'noopener'}>
+          <span>{s.label}</span><span class="ext">{s.ext}</span>
+        </a>
+      ))}
     </div>
   </div>
 </section>

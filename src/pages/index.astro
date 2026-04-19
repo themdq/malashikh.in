@@ -18,6 +18,7 @@ import HomeTerminal from '@/components/home/HomeTerminal';
 import KonamiOverlay from '@/components/home/KonamiOverlay';
 
 import { getCollection } from 'astro:content';
+import { meta, about, now, social, ticker as tickerItems } from '@/data/site';
 
 const allProjects = await getCollection('projects');
 const featuredProjects = allProjects
@@ -29,33 +30,21 @@ const recentPosts = allPosts
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
-// Site data passed to the terminal component
 const siteData = {
   meta: {
-    name: 'Dmitrii Malashikhin',
-    role: 'Data Engineer',
-    location: 'New York City',
-    email: 'hello@malashikh.in',
+    name: meta.name,
+    role: meta.role,
+    location: meta.location,
+    email: meta.email,
   },
   about: {
-    lead: "I'm a data / pipeline engineer with a cybersecurity background. Born in Russia, studied in Saint Petersburg, recently moved to New York City.",
-    paras: [
-      "Most of my work has been around building and operating data integrations end-to-end: researching sources, writing Python connectors, designing ETL, and enriching / validating security data.",
-      "Off-hours: MMA, NBA, swimming, rollerblading, way too much music. Espresso tonic is my happy place.",
-    ],
-    facts: [
-      { k: 'stack', v: 'Python · SQL · Airflow · K8s' },
-      { k: 'fuel', v: 'Espresso tonic · sparkling water' },
-    ],
+    lead: about.bio.lead,
+    paras: about.bio.parasPlain,
+    facts: about.facts,
   },
   now: {
-    label: 'apr 2026',
-    items: [
-      { ic: '▶', k: 'listening', v: 'King Krule — Borderline', sub: 'on repeat this week' },
-      { ic: '☕', k: 'drinking', v: 'Espresso tonic', sub: 'Café Grumpy, 3rd visit today' },
-      { ic: '✎', k: 'reading', v: 'Designing Data-Intensive Apps', sub: 'ch. 7 — transactions' },
-      { ic: '▲', k: 'building', v: 'a tiny SIEM normalizer', sub: 'weekend project · Python + DuckDB' },
-    ],
+    label: now.label,
+    items: now.items,
   },
   projects: featuredProjects.map(p => ({
     year: String(new Date().getFullYear()),
@@ -63,26 +52,9 @@ const siteData = {
     desc: p.data.description,
   })),
   contact: {
-    links: [
-      { label: 'hello@malashikh.in',   href: 'mailto:hello@malashikh.in',           ext: '✉' },
-      { label: 'github/malashikhin',    href: 'https://github.com/malashikhin',      ext: '↗' },
-      { label: 'linkedin/malashikhin',  href: 'https://linkedin.com/in/malashikhin', ext: '↗' },
-    ],
+    links: social.map(s => ({ label: s.label, href: s.href, ext: s.ext })),
   },
 };
-
-const tickerItems = [
-  'currently in NYC 🗽',
-  'reading: Designing Data-Intensive Apps',
-  'espresso tonic — 3:1, no syrup',
-  'open to interesting problems',
-  'NVD sync at 09:00 UTC daily',
-  'uptime 99.98% (last 90d)',
-  'deploys from main, no staging drama',
-  '40.7128°N · 74.0060°W',
-  'digital minimalism since 2021',
-  'MMA · NBA · swim · skate',
-];
 ---
 
 <HomeLayout>
