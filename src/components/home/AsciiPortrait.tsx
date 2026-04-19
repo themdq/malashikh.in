@@ -242,8 +242,7 @@ export default function AsciiPortrait() {
       </div>
 
       <div className="portrait-secret" aria-hidden="true">
-        <span className="ps-line">// if you found this — hello 👋</span>
-        <span className="ps-line ps-dim">&#35; still figuring things out, one packet at a time</span>
+        <span className="ps-line">↑ ↑ ↓ ↓ ← → ← → B A</span>
       </div>
     </div>
   );
