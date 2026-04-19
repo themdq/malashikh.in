@@ -7,7 +7,7 @@ export const meta = {
   handle: 'dm',
   domain: 'malashikh.in',
   version: 'v2.5',
-  refreshed: 'Apr 2026',
+  refreshed: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
   role: 'Data Engineer',
   roles: ['data engineer', 'backend', 'cybersecurity'] as string[],
   location: 'New York City',
@@ -124,7 +124,7 @@ export const education = [
 // ─── Now (updated manually to reflect current activities) ────────────────────
 
 export const now = {
-  label: 'apr 2026',
+  label: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toLowerCase(),
   items: [
     { ic: '▶', k: 'listening', v: 'King Krule — Borderline',         sub: 'on repeat this week' },
     { ic: '☕', k: 'drinking',  v: 'Espresso tonic',                  sub: 'Today with lime' },
@@ -133,19 +133,11 @@ export const now = {
   ],
 };
 
-// ─── Deploy log (updated manually) ───────────────────────────────────────────
+// ─── Deploy log ───────────────────────────────────────────────────────────────
+// entries are auto-generated from git log at build time (see src/data/build.ts)
 
 export const deploys = {
   uptime: '99.98%',
-  entries: [
-    { date: 'apr 17 09:12', status: 'ok',  msg: 'site v2.5.1 · <code>hero/ascii</code>', dur: '1.2s' },
-    { date: 'apr 16 18:44', status: 'ok',  msg: 'blog post published',                   dur: '0.8s' },
-    { date: 'apr 15 11:03', status: 'ok',  msg: 'tg-to-drive v1.4 · <code>release</code>', dur: '42s' },
-    { date: 'apr 14 21:17', status: 'wip', msg: 'asos-map canary → 20%',                  dur: '—' },
-    { date: 'apr 13 08:29', status: 'ok',  msg: 'cron · NVD sync',                        dur: '3.1s' },
-    { date: 'apr 12 02:04', status: 'err', msg: 'auto-retry · upstream 502',              dur: '14s' },
-    { date: 'apr 11 17:45', status: 'ok',  msg: 'site v2.5.0 · redesign',                 dur: '1.4s' },
-  ],
 };
 
 // ─── Ticker ───────────────────────────────────────────────────────────────────

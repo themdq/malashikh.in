@@ -1,15 +1,6 @@
 ---
 import { meta, nav, social } from '@/data/site';
-
-let buildHash = process.env.COMMIT_HASH;
-if (!buildHash) {
-  try {
-    const { execSync } = await import('child_process');
-    buildHash = execSync('git rev-parse --short HEAD').toString().trim();
-  } catch {
-    buildHash = 'unknown';
-  }
-}
+import { buildHash } from '@/data/build';
 
 const year = new Date().getFullYear();
 const elsewhere = social.filter(s => s.name !== 'telegram');

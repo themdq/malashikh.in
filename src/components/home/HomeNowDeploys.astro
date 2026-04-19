@@ -1,5 +1,6 @@
 ---
 import { now, deploys } from '@/data/site';
+import { deployEntries } from '@/data/build';
 ---
 <div class="dash">
   <!-- Now panel -->
@@ -28,7 +29,7 @@ import { now, deploys } from '@/data/site';
       <span class="rt">uptime {deploys.uptime}</span>
     </div>
     <div class="log" id="log">
-      {deploys.entries.map(e => (
+      {deployEntries.map(e => (
         <div class={`row ${e.status}`}>
           <span class="t">{e.date}</span>
           <span class="s">{e.status === 'ok' ? 'OK' : e.status === 'wip' ? '..' : '!!'}</span>
