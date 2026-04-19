@@ -1,4 +1,6 @@
 ---
+import { execSync } from 'child_process';
+const buildHash = execSync('git rev-parse --short HEAD').toString().trim();
 ---
 <footer>
   <div class="foot-brand">
@@ -40,6 +42,6 @@
 
   <div class="copyline" style="grid-column:1/-1">
     <span>© 2026 Dmitrii Malashikhin · Built with espresso tonic in NYC</span>
-    <span class="coords">40.7128°N, 74.0060°W · <span id="build-hash">build 4a3f9c1</span></span>
+    <span class="coords">40.7128°N, 74.0060°W · <span id="build-hash">build {buildHash}</span></span>
   </div>
 </footer>
