@@ -1,5 +1,5 @@
 ---
-let buildHash = import.meta.env.COMMIT_HASH || process.env.COMMIT_HASH;
+let buildHash = process.env.COMMIT_HASH;
 if (!buildHash) {
   try {
     const { execSync } = await import('child_process');
