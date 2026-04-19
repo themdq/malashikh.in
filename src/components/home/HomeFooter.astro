@@ -1,6 +1,13 @@
 ---
-import { execSync } from 'child_process';
-const buildHash = execSync('git rev-parse --short HEAD').toString().trim();
+let buildHash = import.meta.env.COMMIT_HASH || process.env.COMMIT_HASH;
+if (!buildHash) {
+  try {
+    const { execSync } = await import('child_process');
+    buildHash = execSync('git rev-parse --short HEAD').toString().trim();
+  } catch {
+    buildHash = 'unknown';
+  }
+}
 ---
 <footer>
   <div class="foot-brand">

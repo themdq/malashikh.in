@@ -46,6 +46,8 @@ jobs:
           tags: |
             ghcr.io/themdq/malashikh.in:${{ steps.tag.outputs.value }}
             ghcr.io/themdq/malashikh.in:latest
+          build-args: |
+            COMMIT_HASH=${{ steps.tag.outputs.value }}
 
   deploy:
     name: Deploy to K8s

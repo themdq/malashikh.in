@@ -1,7 +1,8 @@
 # Build stage
 FROM node:20-alpine AS builder
 
-RUN apk add --no-cache git
+ARG COMMIT_HASH=unknown
+ENV COMMIT_HASH=$COMMIT_HASH
 
 WORKDIR /app
 
