@@ -2,24 +2,9 @@ import { useEffect } from 'react';
 
 export default function HomeInteractions() {
   useEffect(() => {
-    // ── NYC Clock ──────────────────────────────────────────────────────
-    function tick() {
-      const el = document.getElementById('timeval');
-      if (!el) return;
-      try {
-        el.textContent = new Date().toLocaleTimeString('en-US', {
-          hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/New_York',
-        });
-      } catch { el.textContent = '—'; }
-    }
-    tick();
-    const clockTimer = setInterval(tick, 30000);
-
-    // ── Dark toggle button ─────────────────────────────────────────────
-    const darkTog = document.getElementById('darkTog');
+    // ── Dark toggle (for keyboard shortcut 'd') ───────────────────────
     function toggleDark() {
-      const cur = document.documentElement.dataset.dark === 'true';
-      const next = !cur;
+      const next = document.documentElement.dataset.dark !== 'true';
       document.documentElement.dataset.dark = String(next);
       if (next) {
         document.documentElement.classList.add('dark');
@@ -29,7 +14,6 @@ export default function HomeInteractions() {
         localStorage.setItem('theme', 'light');
       }
     }
-    darkTog?.addEventListener('click', toggleDark);
 
     // ── Stats count-up ────────────────────────────────────────────────
     const nums = document.querySelectorAll<HTMLElement>('.stat .n[data-count]');
@@ -119,9 +103,7 @@ export default function HomeInteractions() {
     document.addEventListener('keydown', onKeyDown);
 
     return () => {
-      clearInterval(clockTimer);
       if (pulseTimer) clearInterval(pulseTimer);
-      darkTog?.removeEventListener('click', toggleDark);
       document.removeEventListener('keydown', onKeyDown);
       io.disconnect();
       projects.forEach(p => {
