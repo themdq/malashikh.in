@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import BlogLayout from '@/layouts/BlogLayout.astro';
+import InnerLayout from '@/layouts/InnerLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -14,13 +14,37 @@ type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await post.render();
+
+const formattedDate = post.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 ---
 
-<BlogLayout
-  title={post.data.title}
-  description={post.data.excerpt}
-  date={post.data.date}
-  tags={post.data.tags}
->
-  <Content />
-</BlogLayout>
+<InnerLayout title={post.data.title} description={post.data.excerpt}>
+  <article style="padding-bottom:48px">
+    <div class="page-head" style="padding-bottom:24px">
+      <div class="pg-num" style="margin-bottom:8px">
+        <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
+      </div>
+      <h1 style="margin-bottom:16px">{post.data.title}</h1>
+      <p class="subtitle">{post.data.excerpt}</p>
+      {post.data.tags.length > 0 && (
+        <div class="tag-cloud" style="margin-top:16px">
+          {post.data.tags.map((tag: string) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div class="prose-inner">
+      <Content />
+    </div>
+
+    <div style="margin-top:48px;padding-top:24px;border-top:1px dashed var(--rule)">
+      <a href="/blog" class="btn">← all posts</a>
+    </div>
+  </article>
+</InnerLayout>

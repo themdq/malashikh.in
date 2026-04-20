@@ -1,5 +1,6 @@
 ---
 import { meta, nav } from '@/data/site';
+const currentPath = Astro.url.pathname;
 ---
 <header class="topbar" role="banner">
   <a href="/" class="brand" aria-label="Home">
@@ -12,7 +13,7 @@ import { meta, nav } from '@/data/site';
 
   <nav class="primary" role="navigation" aria-label="Primary">
     {nav.map(item => (
-      <a href={item.href} class={item.href === '/' ? 'active' : undefined}>
+      <a href={item.href} class={item.href === currentPath ? 'active' : undefined}>
         <span class="b">[</span>{item.label.toLowerCase()}<span class="b">]</span>
       </a>
     ))}
@@ -27,3 +28,31 @@ import { meta, nav } from '@/data/site';
     <button class="tog" id="darkTog" aria-label="Toggle theme">☾ dark</button>
   </div>
 </header>
+
+<script>
+  // Clock
+  function tick() {
+    const el = document.getElementById('timeval');
+    if (!el) return;
+    try {
+      el.textContent = new Date().toLocaleTimeString('en-US', {
+        hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/New_York',
+      });
+    } catch { el.textContent = '—'; }
+  }
+  tick();
+  setInterval(tick, 30000);
+
+  // Dark toggle
+  document.getElementById('darkTog')?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.dark !== 'true';
+    document.documentElement.dataset.dark = String(next);
+    if (next) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>

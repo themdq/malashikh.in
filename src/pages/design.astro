@@ -1,11 +1,6 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import HomeLayout from '@/layouts/HomeLayout.astro';
+import HomeTopbar from '@/components/home/HomeTopbar.astro';
 
 const flexokiBase = [
   { name: '--paper',     light: '#FFFCF0', dark: '#100F0F', usage: 'Page background' },
@@ -21,15 +16,11 @@ const flexokiBase = [
   { name: '--highlight', light: '#FCEEB8', dark: '#402D1A', usage: 'Selection bg' },
 ];
 
-const semanticTokens = [
-  { name: 'background',      var: '--background',      tailwind: 'bg-background',      hsl: '48 100% 97%' },
-  { name: 'foreground',      var: '--foreground',      tailwind: 'text-foreground',    hsl: '0 3% 6%' },
-  { name: 'primary',         var: '--primary',         tailwind: 'bg-primary',         hsl: '0 3% 6%' },
-  { name: 'secondary',       var: '--secondary',       tailwind: 'bg-secondary',       hsl: '51 33% 92%' },
-  { name: 'muted',           var: '--muted',           tailwind: 'bg-muted',           hsl: '51 33% 92%' },
-  { name: 'muted-foreground',var: '--muted-foreground',tailwind: 'text-muted-foreground', hsl: '50 3% 42%' },
-  { name: 'border',          var: '--border',          tailwind: 'border',             hsl: '51 21% 79%' },
-  { name: 'destructive',     var: '--destructive',     tailwind: 'bg-destructive',     hsl: '0 73% 41%' },
+const accentSwatches = [
+  { name: 'espresso', accent: '#AF3029', soft: '#D14D41' },
+  { name: 'rust',     accent: '#BC5215', soft: '#DA702C' },
+  { name: 'cyan',     accent: '#24837B', soft: '#3AA99F' },
+  { name: 'ink',      accent: '#100F0F', soft: '#403E3C' },
 ];
 
 const flexokiExtended = [
@@ -117,495 +108,529 @@ const keyboardShortcuts = [
 ];
 ---
 
-<BaseLayout title="Design System" description="Visual design language of malashikh.in — tokens, components, and patterns.">
-  <section class="container py-12 md:py-24">
-    <div class="max-w-4xl mx-auto space-y-24">
+<HomeLayout title="Design System" description="Visual design language of malashikh.in — tokens, components, and patterns.">
+  <HomeTopbar />
 
-      <!-- Header -->
-      <div class="space-y-4">
-        <p class="text-xs text-muted-foreground tracking-widest uppercase">/ design</p>
-        <h1 class="text-4xl font-bold tracking-tight">[ design system ]</h1>
-        <p class="text-muted-foreground max-w-2xl leading-relaxed text-sm">
-          The visual language of malashikh.in. Flexoki palette, JetBrains Mono + Instrument Serif,
-          zero border-radius, CSS custom properties, and a sharp functional aesthetic.
-        </p>
-        <nav class="flex flex-wrap gap-x-6 gap-y-2 text-sm border-t pt-4">
-          <a href="#colors"          class="text-muted-foreground hover:text-foreground transition-colors">→ colors</a>
-          <a href="#typography"      class="text-muted-foreground hover:text-foreground transition-colors">→ typography</a>
-          <a href="#spacing"         class="text-muted-foreground hover:text-foreground transition-colors">→ spacing</a>
-          <a href="#components"      class="text-muted-foreground hover:text-foreground transition-colors">→ components</a>
-          <a href="#home-components" class="text-muted-foreground hover:text-foreground transition-colors">→ home components</a>
-          <a href="#patterns"        class="text-muted-foreground hover:text-foreground transition-colors">→ patterns</a>
-        </nav>
+  <!-- INTRO -->
+  <section class="block" id="top" style="padding-top: 32px; padding-bottom: 0;">
+    <div class="section-head">
+      <div class="num">§ 00</div>
+      <h2>Design <span class="it">system.</span></h2>
+    </div>
+    <p style="color: var(--ink-2); font-size: 13px; max-width: 60ch; line-height: 1.6; margin-bottom: 24px;">
+      The visual language of malashikh.in. Flexoki palette, JetBrains Mono + Instrument Serif,
+      zero border-radius, CSS custom properties, and a sharp functional aesthetic.
+    </p>
+    <nav class="ds-nav">
+      <a href="#colors">→ colors</a>
+      <a href="#typography">→ typography</a>
+      <a href="#spacing">→ spacing</a>
+      <a href="#components">→ components</a>
+      <a href="#home-components">→ home components</a>
+      <a href="#patterns">→ patterns</a>
+    </nav>
+  </section>
+
+  <!-- 01 COLORS -->
+  <section class="block" id="colors">
+    <div class="section-head">
+      <div class="num">§ 01</div>
+      <h2>Color <span class="it">tokens.</span></h2>
+    </div>
+
+    <div class="panel" style="margin-bottom: 16px;">
+      <div class="phead">
+        <b>Flexoki Base</b>
+        <span class="rt">home.css · light / dark pairs</span>
       </div>
-
-      <!-- 01 COLORS -->
-      <div id="colors" class="space-y-12">
-        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">01 / Colors</h2>
-
-        <!-- Semantic tokens -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Semantic Tokens</h3>
-          <p class="text-xs text-muted-foreground">
-            CSS custom properties from <code class="bg-muted px-1 py-0.5">global.css</code>. Invert in dark mode.
-          </p>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {semanticTokens.map(token => (
-              <div class="space-y-2">
-                <div class="h-14 w-full border" style={`background: hsl(var(${token.var}));`}></div>
-                <div class="text-xs space-y-0.5">
-                  <p class="font-medium">{token.name}</p>
-                  <p class="text-muted-foreground font-mono text-[10px]">{token.var}</p>
-                  <p class="text-muted-foreground font-mono text-[10px]">{token.hsl}</p>
-                </div>
-              </div>
-            ))}
+      <div style="padding: 14px 18px; display: grid; gap: 6px;">
+        {flexokiBase.map(token => (
+          <div class="ds-palette-row">
+            <code class="ds-var">{token.name}</code>
+            <span class="ds-usage">{token.usage}</span>
+            <div class="ds-swatch" style={`background: ${token.light};`}></div>
+            <code class="ds-hex">{token.light}</code>
+            <div class="ds-swatch" style={`background: ${token.dark}; border-color: var(--rule);`}></div>
+            <code class="ds-hex">{token.dark}</code>
           </div>
-        </div>
-
-        <!-- Flexoki extended -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Flexoki Extended</h3>
-          <p class="text-xs text-muted-foreground">
-            8 accent colors in <code class="bg-muted px-1 py-0.5">global.css</code>. Available as Tailwind utilities
-            (<code class="bg-muted px-1 py-0.5">text-flexoki-cyan</code>, <code class="bg-muted px-1 py-0.5">bg-flexoki-red</code> …).
-            Shift lighter in dark mode.
-          </p>
-          <div class="grid grid-cols-4 sm:grid-cols-8 gap-3">
-            {flexokiExtended.map(color => (
-              <div class="space-y-2">
-                <div class="h-10 w-full" style={`background: hsl(var(${color.var}));`}></div>
-                <p class="text-[10px] font-medium">{color.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- Flexoki base (home.css) -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Flexoki Base Palette</h3>
-          <p class="text-xs text-muted-foreground">
-            Defined in <code class="bg-muted px-1 py-0.5">home.css</code> exclusively for the homepage.
-            Shown here with hardcoded hex values — light on left, dark on right.
-          </p>
-          <div class="space-y-2">
-            {flexokiBase.map(token => (
-              <div class="grid items-center gap-3 text-xs" style="grid-template-columns: 160px 1fr auto auto auto;">
-                <span class="font-mono text-muted-foreground">{token.name}</span>
-                <span class="text-muted-foreground hidden sm:block">{token.usage}</span>
-                <div class="h-7 w-7 shrink-0 border" style={`background: ${token.light};`}></div>
-                <code class="text-muted-foreground hidden sm:block w-20">{token.light}</code>
-                <div class="flex items-center gap-2">
-                  <div class="h-7 w-7 shrink-0 border border-muted" style={`background: ${token.dark};`}></div>
-                  <code class="text-muted-foreground hidden sm:block w-20">{token.dark}</code>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
+    </div>
 
-      <!-- 02 TYPOGRAPHY -->
-      <div id="typography" class="space-y-12">
-        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">02 / Typography</h2>
-
-        <!-- Font families -->
-        <div class="space-y-6">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Font Families</h3>
-          <div class="space-y-6">
-            <div class="space-y-2 border-l-2 border-foreground pl-5">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Monospace — JetBrains Mono</p>
-              <p class="text-xl font-mono">The quick brown fox jumps over the lazy dog.</p>
-              <p class="text-xs text-muted-foreground">
-                Body, labels, UI, code, nav, captions. <code class="bg-muted px-1">font-feature-settings: "ss01" "cv11"</code>
-              </p>
-            </div>
-            <div class="space-y-2 border-l-2 border-foreground pl-5">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Serif — Instrument Serif</p>
-              <p class="text-xl" style="font-family: 'Instrument Serif', 'Times New Roman', serif; font-style: italic;">The quick brown fox jumps over the lazy dog.</p>
-              <p class="text-xs text-muted-foreground">
-                Display headings, hero, section titles, project names. Italic for decorative emphasis.
-              </p>
-            </div>
-          </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+      <div class="panel">
+        <div class="phead">
+          <b>Accent Swatches</b>
+          <span class="rt">data-accent="{'{name}'}"</span>
         </div>
-
-        <!-- Type scale -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Type Scale</h3>
-          <div class="space-y-5 overflow-x-hidden">
-            {typeScale.map(step => (
-              <div class="flex items-baseline gap-4">
-                <span class="text-[10px] text-muted-foreground w-10 shrink-0 tabular-nums">{step.size}</span>
-                <p
-                  style={`font-size:${step.size};font-family:${step.font==='serif'?"'Instrument Serif','Times New Roman',serif":"'JetBrains Mono',monospace"};letter-spacing:${step.letterSpacing};text-transform:${step.transform};line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 8rem);`}
-                >Aa — {step.usage}</p>
-                <span class="text-[10px] text-muted-foreground shrink-0 hidden sm:block ml-auto">{step.usage}</span>
+        <div style="padding: 14px 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          {accentSwatches.map(s => (
+            <div style="border: 1px solid var(--rule);">
+              <div style={`height: 36px; background: ${s.accent};`}></div>
+              <div style="padding: 6px 8px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--ink); margin: 0 0 2px;">{s.name}</p>
+                <code style="font-size: 10px; color: var(--ink-3); font-family: var(--mono);">{s.accent}</code>
               </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- Letter spacing -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Letter Spacing</h3>
-          <div class="space-y-3 text-sm">
-            {[
-              { em: '−0.02em', cls: 'tracking-[-0.02em]',  label: 'Display headings, hero title' },
-              { em: '0em',     cls: '',                     label: 'Body text default' },
-              { em: '0.02em',  cls: 'tracking-[0.02em]',   label: 'Body text, small labels' },
-              { em: '0.08em',  cls: 'tracking-[0.08em]',   label: 'Nav links, UI labels' },
-              { em: '0.16em',  cls: 'tracking-[0.16em] uppercase text-xs', label: 'Section labels (uppercase)' },
-            ].map(row => (
-              <div class="flex items-center gap-4">
-                <span class="text-[10px] text-muted-foreground w-20 shrink-0">{row.em}</span>
-                <p class={row.cls}>The quick brown fox</p>
-                <span class="text-[10px] text-muted-foreground hidden sm:block ml-auto">{row.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- Line height -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Line Height</h3>
-          <div class="grid sm:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <p class="text-[10px] text-muted-foreground">0.92 — Headings</p>
-              <p class="border p-4" style="line-height:0.92;font-size:22px;font-family:'Instrument Serif',serif;">
-                Display heading with tight line height stacked
-              </p>
-            </div>
-            <div class="space-y-2">
-              <p class="text-[10px] text-muted-foreground">1.55 — Body</p>
-              <p class="border p-4 text-sm" style="line-height:1.55;">
-                Body text with comfortable reading line height. Spacing between lines improves legibility for long-form content.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 03 SPACING -->
-      <div id="spacing" class="space-y-12">
-        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">03 / Spacing & Layout</h2>
-
-        <!-- Scale -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Spacing Scale</h3>
-          <div class="space-y-3">
-            {spacingScale.map(size => (
-              <div class="flex items-center gap-4">
-                <span class="text-[10px] text-muted-foreground w-10 shrink-0 tabular-nums">{size}px</span>
-                <div class="bg-foreground h-3" style={`width:${size}px;min-width:${size}px;`}></div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- Container -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Container</h3>
-          <div class="border border-dashed p-4 text-xs">
-            {[
-              ['max-width',         '1240px'],
-              ['horizontal padding','32px'],
-              ['border-radius',     '0px (enforced everywhere)'],
-            ].map(([k, v]) => (
-              <div class="flex justify-between py-1.5 border-b border-dashed last:border-0">
-                <span class="text-muted-foreground">{k}</span>
-                <code>{v}</code>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- Grid patterns -->
-        <div class="space-y-6">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Common Grid Patterns</h3>
-          <div class="space-y-6">
-            {[
-              { label: 'Hero',      cols: '1.2fr 1fr',        cells: ['1.2fr', '1fr'] },
-              { label: 'Projects',  cols: 'repeat(3, 1fr)',   cells: ['1fr', '1fr', '1fr'] },
-            ].map(({ label, cols, cells }) => (
-              <div class="space-y-2">
-                <p class="text-[10px] text-muted-foreground">
-                  {label} — <code class="bg-muted px-1">grid-template-columns: {cols}</code>
-                </p>
-                <div class="border border-dashed" style={`display:grid;grid-template-columns:${cols};height:36px;`}>
-                  {cells.map((cell, i) => (
-                    <div class={`flex items-center justify-center text-[10px] text-muted-foreground ${i < cells.length - 1 ? 'border-r border-dashed' : ''}`}>{cell}</div>
-                  ))}
-                </div>
-              </div>
-            ))}
-            <div class="space-y-2">
-              <p class="text-[10px] text-muted-foreground">
-                Blog posts — <code class="bg-muted px-1">grid-template-columns: 110px 1fr auto</code>
-              </p>
-              <div class="border border-dashed" style="display:grid;grid-template-columns:110px 1fr auto;height:36px;">
-                <div class="border-r border-dashed flex items-center justify-center text-[10px] text-muted-foreground">110px</div>
-                <div class="border-r border-dashed flex items-center justify-center text-[10px] text-muted-foreground">1fr</div>
-                <div class="flex items-center justify-center text-[10px] text-muted-foreground px-4">auto</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 04 COMPONENTS -->
-      <div id="components" class="space-y-12">
-        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">04 / Components</h2>
-
-        <!-- Button -->
-        <div class="space-y-6">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Button</h3>
-          <div class="space-y-4">
-            <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Variants</p>
-            <div class="flex flex-wrap gap-3">
-              <Button>default</Button>
-              <Button variant="outline">outline</Button>
-              <Button variant="secondary">secondary</Button>
-              <Button variant="ghost">ghost</Button>
-              <Button variant="destructive">destructive</Button>
-              <Button variant="link">link</Button>
-            </div>
-            <p class="text-[10px] text-muted-foreground uppercase tracking-widest mt-4">Sizes</p>
-            <div class="flex flex-wrap items-center gap-3">
-              <Button size="sm">sm</Button>
-              <Button>default</Button>
-              <Button size="lg">lg</Button>
-              <Button size="icon">⌘</Button>
-            </div>
-          </div>
-          <pre class="bg-muted p-4 text-xs overflow-x-auto"><code>{'<Button variant="outline" size="sm">Click me</Button>'}</code></pre>
-        </div>
-
-        <!-- Badge -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Badge</h3>
-          <div class="flex flex-wrap gap-3">
-            <Badge>default</Badge>
-            <Badge variant="secondary">secondary</Badge>
-            <Badge variant="destructive">destructive</Badge>
-            <Badge variant="outline">outline</Badge>
-          </div>
-          <pre class="bg-muted p-4 text-xs overflow-x-auto"><code>{'<Badge variant="secondary">TypeScript</Badge>'}</code></pre>
-        </div>
-
-        <!-- Card -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Card</h3>
-          <div class="max-w-sm">
-            <Card>
-              <CardHeader>
-                <CardTitle>Project Alpha</CardTitle>
-                <CardDescription>Real-time data enrichment pipeline</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p class="text-sm text-muted-foreground">A fully managed ingestion layer that normalises and routes events to downstream consumers.</p>
-              </CardContent>
-              <CardFooter className="flex gap-2">
-                <Badge variant="secondary">Python</Badge>
-                <Badge variant="secondary">Kafka</Badge>
-                <Badge variant="secondary">k8s</Badge>
-              </CardFooter>
-            </Card>
-          </div>
-          <pre class="bg-muted p-4 text-xs overflow-x-auto"><code>{`<Card>
-  <CardHeader>
-    <CardTitle>Title</CardTitle>
-    <CardDescription>Subtitle</CardDescription>
-  </CardHeader>
-  <CardContent>Content</CardContent>
-  <CardFooter>Footer</CardFooter>
-</Card>`}</code></pre>
-        </div>
-
-        <!-- Form controls -->
-        <div class="space-y-6">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Form Controls</h3>
-          <div class="grid sm:grid-cols-2 gap-8">
-            <div class="space-y-4">
-              <div class="space-y-2">
-                <Label htmlFor="ds-input">Name</Label>
-                <Input id="ds-input" placeholder="Dmitrii Malashikhin" />
-              </div>
-              <div class="space-y-2">
-                <Label htmlFor="ds-disabled">Disabled</Label>
-                <Input id="ds-disabled" placeholder="Not editable" disabled />
-              </div>
-              <div class="space-y-2">
-                <Label htmlFor="ds-error" className="text-destructive">Email (error state)</Label>
-                <Input id="ds-error" placeholder="bad@input" className="border-destructive" />
-              </div>
-            </div>
-            <div class="space-y-2">
-              <Label htmlFor="ds-textarea">Message</Label>
-              <Textarea id="ds-textarea" placeholder="Type your message…" className="min-h-[120px]" />
-            </div>
-          </div>
-          <pre class="bg-muted p-4 text-xs overflow-x-auto"><code>{`<Label htmlFor="email">Email</Label>
-<Input id="email" placeholder="you@example.com" />
-
-{/* Error state */}
-<Input className="border-destructive" />`}</code></pre>
-        </div>
-      </div>
-
-      <!-- 05 HOME COMPONENTS -->
-      <div id="home-components" class="space-y-8">
-        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">05 / Home Components</h2>
-        <p class="text-sm text-muted-foreground">
-          Interactive showcase components used exclusively on the homepage (<code class="bg-muted px-1 py-0.5">/</code>).
-          They use the Flexoki base palette from <code class="bg-muted px-1 py-0.5">src/styles/home.css</code>.
-        </p>
-        <div class="space-y-3">
-          {homeComponents.map(comp => (
-            <div class="border border-dashed p-4 space-y-1.5">
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <p class="font-medium text-sm">{comp.name}</p>
-                  <p class="text-[10px] text-muted-foreground font-mono mt-0.5">{comp.file}</p>
-                </div>
-                <a href={comp.anchor} class="text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0">
-                  see live →
-                </a>
-              </div>
-              <p class="text-xs text-muted-foreground">{comp.description}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <!-- 06 PATTERNS -->
-      <div id="patterns" class="space-y-12">
-        <h2 class="text-2xl font-bold tracking-tight border-b pb-4">06 / Interaction Patterns</h2>
-
-        <!-- Keyboard shortcuts -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Keyboard Shortcuts (Homepage)</h3>
-          <table class="w-full text-sm border-collapse">
-            <thead>
-              <tr class="border-b">
-                <th class="text-left py-2 pr-8 font-medium text-xs text-muted-foreground uppercase tracking-widest">Key</th>
-                <th class="text-left py-2 font-medium text-xs text-muted-foreground uppercase tracking-widest">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {keyboardShortcuts.map(s => (
-                <tr class="border-b border-dashed">
-                  <td class="py-2 pr-8">
-                    <kbd class="bg-muted border px-2 py-0.5 text-xs font-mono">{s.key}</kbd>
-                  </td>
-                  <td class="py-2 text-sm text-muted-foreground">{s.action}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <div class="panel">
+        <div class="phead">
+          <b>Flexoki Extended</b>
+          <span class="rt">global.css · hsl(var(--flexoki-*))</span>
         </div>
+        <div style="padding: 14px 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+          {flexokiExtended.map(color => (
+            <div>
+              <div style={`height: 28px; width: 100%; background: hsl(var(${color.var})); border: 1px solid var(--rule); margin-bottom: 4px;`}></div>
+              <p style="font-size: 10px; color: var(--ink-3);">{color.name}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Hover patterns -->
-        <div class="space-y-6">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Hover Patterns</h3>
-          <div class="space-y-4">
-            <div class="flex items-center gap-6 flex-wrap">
-              <a href="#" class="border p-3 text-sm block transition-all duration-150 hover:border-foreground hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[2px_2px_0_0_hsl(var(--foreground))]">
-                Translate + shadow
-              </a>
-              <code class="text-xs text-muted-foreground">translate(-2,-2) + box-shadow foreground</code>
+  <!-- 02 TYPOGRAPHY -->
+  <section class="block" id="typography">
+    <div class="section-head">
+      <div class="num">§ 02</div>
+      <h2>Type<span class="it">face.</span></h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+      <div class="panel">
+        <div class="phead"><b>JetBrains Mono</b><span class="rt">--mono · body + UI</span></div>
+        <div style="padding: 16px 18px;">
+          <p style="font-family: var(--mono); font-size: 22px; color: var(--ink); line-height: 1.3; margin: 0 0 8px;">Aa Bb 01 23 !?</p>
+          <p style="font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); line-height: 1.55; margin: 0 0 10px;">
+            The quick brown fox jumps over the lazy dog.
+          </p>
+          <p style="font-size: 11px; color: var(--ink-3);">Body, labels, UI, code, nav. <code style="background: var(--paper-3); padding: 1px 4px; font-family: var(--mono);">ss01 cv11</code></p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="phead"><b>Instrument Serif</b><span class="rt">--serif · display + headings</span></div>
+        <div style="padding: 16px 18px;">
+          <p style="font-family: var(--serif); font-size: 28px; color: var(--ink); line-height: 1.1; margin: 0 0 8px; font-style: italic;">Aa Bb 01 23 !?</p>
+          <p style="font-family: var(--serif); font-size: 16px; color: var(--ink-2); line-height: 1.4; margin: 0 0 10px; font-style: italic;">
+            The quick brown fox jumps over the lazy dog.
+          </p>
+          <p style="font-size: 11px; color: var(--ink-3);">Display headings, hero, section titles. Italic for decorative emphasis.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom: 16px;">
+      <div class="phead"><b>Type Scale</b></div>
+      <div style="padding: 16px 18px; display: grid; gap: 18px; overflow: hidden;">
+        {typeScale.map(step => (
+          <div style="display: flex; align-items: baseline; gap: 16px;">
+            <span style="font-size: 10px; color: var(--ink-3); width: 36px; flex-shrink: 0; font-variant-numeric: tabular-nums;">{step.size}</span>
+            <p style={`font-size: ${step.size}; font-family: ${step.font === 'serif' ? 'var(--serif)' : 'var(--mono)'}; letter-spacing: ${step.letterSpacing}; text-transform: ${step.transform}; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 500px; margin: 0; flex: 1;`}>
+              Aa — {step.usage}
+            </p>
+            <span style="font-size: 10px; color: var(--ink-4); flex-shrink: 0; margin-left: auto;">{step.font}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div class="panel">
+        <div class="phead"><b>Letter Spacing</b></div>
+        <div style="padding: 14px 18px; display: grid; gap: 0;">
+          {[
+            { em: '−0.02em', s: 'letter-spacing:-0.02em',                           label: 'Display headings' },
+            { em: '0em',     s: '',                                                  label: 'Body default' },
+            { em: '0.02em',  s: 'letter-spacing:0.02em',                            label: 'Body, small labels' },
+            { em: '0.08em',  s: 'letter-spacing:0.08em',                            label: 'Nav links' },
+            { em: '0.16em',  s: 'letter-spacing:0.16em;text-transform:uppercase;font-size:10px', label: 'Section labels' },
+          ].map(row => (
+            <div style="display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px dashed var(--rule-soft);">
+              <span style="font-size: 10px; color: var(--ink-3); width: 54px; flex-shrink: 0;">{row.em}</span>
+              <span style={row.s}>Brown fox</span>
+              <span style="font-size: 10px; color: var(--ink-4); margin-left: auto; flex-shrink: 0;">{row.label}</span>
             </div>
-            <div class="flex items-center gap-6 flex-wrap">
-              <a href="#" class="border border-border p-3 text-sm block transition-colors hover:border-foreground">
-                Border shift
-              </a>
-              <code class="text-xs text-muted-foreground">hover:border-foreground</code>
-            </div>
-            <div class="flex items-center gap-6 flex-wrap">
-              <a href="#" class="p-3 text-sm block transition-all duration-150 hover:pl-6">
-                → Left-pad slide
-              </a>
-              <code class="text-xs text-muted-foreground">hover:padding-left (blog post rows)</code>
-            </div>
-            <div class="flex items-center gap-6 flex-wrap">
-              <a href="#" class="p-3 text-sm block transition-colors hover:text-flexoki-cyan">
-                Color shift → cyan
-              </a>
-              <code class="text-xs text-muted-foreground">hover:text-flexoki-cyan</code>
-            </div>
+          ))}
+        </div>
+      </div>
+      <div class="panel">
+        <div class="phead"><b>Line Height</b></div>
+        <div style="padding: 14px 18px; display: grid; gap: 14px;">
+          <div>
+            <p style="font-size: 10px; color: var(--ink-3); margin: 0 0 6px; text-transform: uppercase; letter-spacing: .1em;">0.92 — Headings</p>
+            <p style="font-family: var(--serif); font-size: 21px; line-height: 0.92; border: 1px solid var(--rule); padding: 12px; background: var(--paper-2); margin: 0;">
+              Display heading with tight line height stacked
+            </p>
+          </div>
+          <div>
+            <p style="font-size: 10px; color: var(--ink-3); margin: 0 0 6px; text-transform: uppercase; letter-spacing: .1em;">1.55 — Body</p>
+            <p style="font-size: 13px; line-height: 1.55; border: 1px solid var(--rule); padding: 12px; background: var(--paper-2); margin: 0; color: var(--ink-2);">
+              Body text with comfortable reading line height. Spacing improves legibility for long-form content.
+            </p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Focus style -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Focus Style</h3>
-          <p class="text-xs text-muted-foreground">Tab to see each style in action.</p>
-          <div class="flex flex-wrap gap-12">
-            <div class="space-y-2">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Global pages — ring</p>
-              <a href="#" class="text-sm underline">Tab to focus me</a>
+  <!-- 03 SPACING -->
+  <section class="block" id="spacing">
+    <div class="section-head">
+      <div class="num">§ 03</div>
+      <h2>Spacing <span class="it">&amp; layout.</span></h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px;">
+      <div class="panel">
+        <div class="phead"><b>Spacing Scale</b></div>
+        <div style="padding: 14px 18px; display: grid; gap: 10px;">
+          {spacingScale.map(size => (
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 10px; color: var(--ink-3); width: 36px; flex-shrink: 0; font-variant-numeric: tabular-nums;">{size}px</span>
+              <div style={`height: 10px; width: ${size}px; min-width: ${size}px; background: var(--ink);`}></div>
             </div>
-            <div class="space-y-2">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Homepage — brackets</p>
-              <a href="#" class="text-sm underline ds-bracket-focus">Tab to focus me</a>
-            </div>
-          </div>
+          ))}
         </div>
+      </div>
 
-        <!-- Dark mode -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Dark Mode</h3>
-          <div class="border border-dashed p-4 text-xs">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="panel">
+          <div class="phead"><b>Container</b></div>
+          <div style="padding: 10px 18px; font-size: 11.5px;">
             {[
-              ['Strategy',                'class (not prefers-color-scheme)'],
-              ['Toggle target',           'document.documentElement.classList'],
-              ['Persistence',             "localStorage key: 'theme'"],
-              ['Meta theme-color (light)','hsl(48 100% 97%)'],
-              ['Meta theme-color (dark)', 'hsl(0 3% 6%)'],
+              ['max-width', '1240px'],
+              ['horizontal padding', '32px'],
+              ['border-radius', '0px (enforced everywhere)'],
             ].map(([k, v]) => (
-              <div class="flex justify-between py-1.5 border-b border-dashed last:border-0">
-                <span class="text-muted-foreground">{k}</span>
-                <code>{v}</code>
+              <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px dashed var(--rule-soft);">
+                <span style="color: var(--ink-3);">{k}</span>
+                <code style="font-family: var(--mono); font-size: 11px; color: var(--ink-2);">{v}</code>
               </div>
             ))}
           </div>
         </div>
 
-        <!-- Selection -->
-        <div class="space-y-4">
-          <h3 class="text-xs uppercase tracking-widest text-muted-foreground">Text Selection</h3>
-          <p class="text-sm ds-selection-demo border border-dashed p-4">
-            Select this text to see the custom selection style.
-            Uses <code>--primary</code> background and <code>--primary-foreground</code> text color.
-          </p>
+        <div class="panel">
+          <div class="phead"><b>Grid Patterns</b></div>
+          <div style="padding: 10px 18px; font-size: 11px; display: grid; gap: 10px;">
+            {[
+              { label: 'Hero',      cols: '1.2fr 1fr' },
+              { label: 'Projects',  cols: 'repeat(3, 1fr)' },
+              { label: 'Dashboard', cols: '1.2fr 1fr' },
+              { label: 'Blog',      cols: '110px 1fr auto' },
+              { label: 'Footer',    cols: '2fr 1fr 1fr 1fr' },
+            ].map(({ label, cols }) => (
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px dashed var(--rule-soft);">
+                <span style="color: var(--ink-3);">{label}</span>
+                <code style="font-family: var(--mono); color: var(--accent); font-size: 10.5px;">{cols}</code>
+              </div>
+            ))}
+          </div>
         </div>
-
       </div>
     </div>
   </section>
-</BaseLayout>
+
+  <!-- 04 COMPONENTS -->
+  <section class="block" id="components">
+    <div class="section-head">
+      <div class="num">§ 04</div>
+      <h2>UI <span class="it">components.</span></h2>
+    </div>
+
+    <!-- Buttons -->
+    <div class="panel" style="margin-bottom: 16px;">
+      <div class="phead"><b>Buttons — .btn</b></div>
+      <div style="padding: 20px 18px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; border-bottom: 1px solid var(--rule);">
+        <button class="btn">default</button>
+        <button class="btn primary">primary</button>
+        <button class="btn" style="opacity: .4; pointer-events: none;">disabled</button>
+        <button class="btn">view projects <span class="kbd">W</span></button>
+      </div>
+      <pre class="ds-code"><code>{`<button class="btn">default</button>
+<button class="btn primary">primary</button>
+<button class="btn">label <span class="kbd">W</span></button>`}</code></pre>
+    </div>
+
+    <!-- Tags + chips -->
+    <div class="panel" style="margin-bottom: 16px;">
+      <div class="phead"><b>Tags &amp; Chips</b></div>
+      <div style="padding: 20px 18px; display: flex; flex-wrap: wrap; gap: 24px; align-items: center; border-bottom: 1px solid var(--rule);">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .12em;">.role .tag</span>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <span class="ds-tag">Python</span>
+            <span class="ds-tag">Kafka</span>
+            <span class="ds-tag ds-tag-primary">data-eng</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .12em;">.chip</span>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span class="chip"><span class="dot live"></span>available</span>
+            <span class="chip"><span class="dot"></span>idle</span>
+          </div>
+        </div>
+      </div>
+      <pre class="ds-code"><code>{`<span class="chip"><span class="dot live"></span>available</span>
+<span class="ds-tag">Python</span>
+<span class="ds-tag ds-tag-primary">accent tag</span>`}</code></pre>
+    </div>
+
+    <!-- Panel -->
+    <div class="panel" style="margin-bottom: 16px;">
+      <div class="phead"><b>Panel — .panel</b><span class="rt">primary container primitive</span></div>
+      <div style="padding: 14px 18px; font-size: 12.5px; color: var(--ink-2); border-bottom: 1px solid var(--rule);">
+        <p style="margin: 0 0 10px; line-height: 1.6;">
+          Uses <code style="background: var(--paper-3); padding: 1px 5px; font-family: var(--mono); font-size: 11px;">.phead</code> for the header bar,
+          <code style="background: var(--paper-3); padding: 1px 5px; font-family: var(--mono); font-size: 11px;">&lt;b&gt;</code> for title,
+          and <code style="background: var(--paper-3); padding: 1px 5px; font-family: var(--mono); font-size: 11px;">.rt</code> for right-side aux text.
+        </p>
+      </div>
+      <pre class="ds-code"><code>{`<div class="panel">
+  <div class="phead">
+    <b>Title</b>
+    <span class="rt">aux info</span>
+  </div>
+  <!-- content -->
+</div>`}</code></pre>
+    </div>
+
+    <!-- Fact card + Stats -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+      <div>
+        <p style="font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 8px;">.fact-card</p>
+        <div class="fact-card">
+          <h4>Quick facts <span>✦</span></h4>
+          <div class="fact-list">
+            <div class="r">
+              <span class="k">location</span>
+              <span class="v">New York, NY</span>
+            </div>
+            <div class="r">
+              <span class="k">role</span>
+              <span class="v">Data Engineer <span class="sub">pipeline infra</span></span>
+            </div>
+            <div class="r">
+              <span class="k">stack</span>
+              <span class="v">Python · Kafka · k8s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 8px;">.stats · .stat</p>
+        <div class="stats" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="stat">
+            <div class="n">5<span class="u">yr</span></div>
+            <div class="l">experience</div>
+            <div class="sl">data engineering</div>
+          </div>
+          <div class="stat">
+            <div class="n">3<span class="u">×</span></div>
+            <div class="l">pipelines</div>
+            <div class="sl">production scale</div>
+          </div>
+        </div>
+        <p style="font-size: 11px; color: var(--ink-3); margin-top: 8px; line-height: 1.5;">
+          Hover a stat to see the accent underline animation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 HOME COMPONENTS -->
+  <section class="block" id="home-components">
+    <div class="section-head">
+      <div class="num">§ 05</div>
+      <h2>Home <span class="it">components.</span></h2>
+      <div class="aux"><a href="/" style="border-bottom: 1px solid var(--accent);">see live →</a></div>
+    </div>
+    <p style="font-size: 13px; color: var(--ink-2); margin-bottom: 20px; max-width: 60ch; line-height: 1.6;">
+      Interactive showcase components used exclusively on the homepage (<code style="background: var(--paper-3); padding: 1px 5px; font-family: var(--mono); font-size: 11px;">/</code>).
+      They use the Flexoki base palette from <code style="background: var(--paper-3); padding: 1px 5px; font-family: var(--mono); font-size: 11px;">src/styles/home.css</code>.
+    </p>
+    <div style="display: grid; gap: 8px;">
+      {homeComponents.map(comp => (
+        <div class="panel">
+          <div class="phead">
+            <b>{comp.name}</b>
+            <span class="rt">
+              <code style="font-family: var(--mono); font-size: 10px; color: var(--ink-3);">{comp.file}</code>
+              <a href={comp.anchor} style="color: var(--accent); font-size: 11px; margin-left: 14px;">see live →</a>
+            </span>
+          </div>
+          <div style="padding: 10px 14px; font-size: 12px; color: var(--ink-2);">{comp.description}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 06 PATTERNS -->
+  <section class="block" id="patterns">
+    <div class="section-head">
+      <div class="num">§ 06</div>
+      <h2>Interaction <span class="it">patterns.</span></h2>
+    </div>
+
+    <!-- Keyboard shortcuts -->
+    <div class="panel" style="margin-bottom: 16px;">
+      <div class="phead">
+        <b>Keyboard Shortcuts</b>
+        <span class="rt">homepage only</span>
+      </div>
+      <div>
+        {keyboardShortcuts.map(s => (
+          <div style="display: grid; grid-template-columns: 180px 1fr; align-items: center; padding: 10px 18px; border-bottom: 1px dashed var(--rule-soft);">
+            <kbd style="border: 1px solid var(--ink-4); padding: 2px 8px; font-size: 11px; background: var(--paper-2); color: var(--ink-2); font-family: var(--mono); width: fit-content;">{s.key}</kbd>
+            <span style="font-size: 12px; color: var(--ink-2);">{s.action}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Hover patterns -->
+    <div class="panel" style="margin-bottom: 16px;">
+      <div class="phead"><b>Hover Patterns</b></div>
+      <div style="padding: 20px 18px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <a href="#" class="ds-hover-shadow" style="border: 1px solid var(--rule); padding: 10px 14px; font-size: 13px; display: block; transition: all .15s;">
+            Translate + shadow
+          </a>
+          <code style="font-size: 11px; color: var(--ink-3); font-family: var(--mono);">translate(-2,-2) + box-shadow var(--accent)</code>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <a href="#" class="ds-hover-border" style="border: 1px solid var(--rule); padding: 10px 14px; font-size: 13px; display: block; transition: border-color .15s;">
+            Border shift
+          </a>
+          <code style="font-size: 11px; color: var(--ink-3); font-family: var(--mono);">hover: border-color → var(--ink)</code>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <a href="#" class="ds-hover-pad" style="padding: 10px 14px; font-size: 13px; display: block; transition: padding .15s; color: var(--ink-2);">
+            → Left-pad slide
+          </a>
+          <code style="font-size: 11px; color: var(--ink-3); font-family: var(--mono);">hover: padding-left (blog post rows)</code>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <a href="#" class="ds-hover-cyan" style="padding: 10px 0; font-size: 13px; display: block; transition: color .15s; color: var(--ink-2);">
+            Color shift → tonic
+          </a>
+          <code style="font-size: 11px; color: var(--ink-3); font-family: var(--mono);">hover: color → var(--tonic)</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark mode -->
+    <div class="panel" style="margin-bottom: 16px;">
+      <div class="phead"><b>Dark Mode</b></div>
+      <div style="padding: 10px 18px; font-size: 11.5px;">
+        {[
+          ['Strategy',               'class + data-dark attribute (not prefers-color-scheme)'],
+          ['Toggle target',          'document.documentElement.dataset.dark = "true"/"false"'],
+          ['Persistence',            'localStorage: theme · home-accent · home-density'],
+          ['Meta theme-color light', '#FFFCF0 (--paper)'],
+          ['Meta theme-color dark',  '#100F0F (--paper dark)'],
+        ].map(([k, v]) => (
+          <div style="display: flex; justify-content: space-between; gap: 24px; padding: 8px 0; border-bottom: 1px dashed var(--rule-soft);">
+            <span style="color: var(--ink-3); flex-shrink: 0;">{k}</span>
+            <code style="font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); text-align: right;">{v}</code>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Selection + Focus -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div class="panel">
+        <div class="phead"><b>Text Selection</b></div>
+        <div style="padding: 16px 18px;">
+          <p class="ds-selection-demo" style="font-size: 13px; line-height: 1.55; color: var(--ink-2); border: 1px solid var(--rule); padding: 12px; background: var(--paper-2);">
+            Select this text to see the custom selection style.
+            Uses <code style="font-family: var(--mono);">--accent</code> background and <code style="font-family: var(--mono);">--paper</code> color.
+          </p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="phead"><b>Focus Style</b></div>
+        <div style="padding: 16px 18px;">
+          <p style="font-size: 11px; color: var(--ink-3); margin-bottom: 12px;">Tab to focus — bracket style from home.css applies site-wide.</p>
+          <a href="#" style="font-size: 13px; color: var(--ink-2);">Tab to focus me</a>
+          <p style="font-size: 11px; color: var(--ink-3); margin-top: 16px; line-height: 1.5;">
+            <code style="font-family: var(--mono); font-size: 10.5px; background: var(--paper-3); padding: 1px 4px;">::before {'{ content: "[" }'}</code><br />
+            <code style="font-family: var(--mono); font-size: 10.5px; background: var(--paper-3); padding: 1px 4px;">::after  {'{ content: "]" }'}</code>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="kbd-legend" aria-hidden="true">
+    <span><kbd>⌘K</kbd> palette</span><span class="sep">·</span>
+    <span><kbd>J</kbd>/<kbd>K</kbd> scroll</span><span class="sep">·</span>
+    <span><kbd>:</kbd> terminal</span><span class="sep">·</span>
+    <span><kbd>D</kbd> dark</span>
+  </div>
+</HomeLayout>
 
 <style is:global>
-  .ds-bracket-focus:focus-visible {
-    outline: none;
-    position: relative;
+  /* Design page nav */
+  .ds-nav {
+    display: flex; flex-wrap: wrap; gap: 4px 20px;
+    font-size: 12px; border-top: 1px dashed var(--rule); padding-top: 16px;
   }
-  .ds-bracket-focus:focus-visible::before {
-    content: "[";
-    position: absolute;
-    left: -0.7em;
-    color: hsl(var(--flexoki-cyan));
+  .ds-nav a { color: var(--ink-3); transition: color .15s; }
+  .ds-nav a:hover { color: var(--accent); }
+
+  /* Palette table row */
+  .ds-palette-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 24px auto 24px auto;
+    align-items: center; gap: 8px; font-size: 11px;
+    padding: 3px 0; border-bottom: 1px dashed var(--rule-soft);
   }
-  .ds-bracket-focus:focus-visible::after {
-    content: "]";
-    position: absolute;
-    right: -0.7em;
-    color: hsl(var(--flexoki-cyan));
+  .ds-var   { color: var(--accent); font-family: var(--mono); }
+  .ds-usage { color: var(--ink-3); }
+  .ds-swatch { width: 24px; height: 20px; border: 1px solid var(--rule); flex-shrink: 0; }
+  .ds-hex   { color: var(--ink-3); font-size: 10px; font-family: var(--mono); }
+
+  /* Tag demo (scoped to design page to avoid leaking into .role / .project) */
+  .ds-tag {
+    font-size: 10px; padding: 2px 7px;
+    border: 1px solid var(--rule); background: var(--paper-2);
+    color: var(--ink-3); letter-spacing: .04em;
+  }
+  .ds-tag-primary { border-color: var(--accent); color: var(--accent); }
+
+  /* Code block */
+  .ds-code {
+    background: var(--paper-2); border-top: 1px solid var(--rule);
+    padding: 12px 18px; font-size: 11px; overflow-x: auto; margin: 0;
+    font-family: var(--mono); color: var(--ink-2); line-height: 1.6;
   }
 
+  /* Hover demos */
+  .ds-hover-shadow:hover {
+    border-color: var(--ink) !important;
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0 var(--accent);
+  }
+  .ds-hover-border:hover { border-color: var(--ink) !important; }
+  .ds-hover-pad:hover    { padding-left: 24px !important; }
+  .ds-hover-cyan:hover   { color: var(--tonic) !important; }
+
+  /* Selection demo */
   .ds-selection-demo::selection,
   .ds-selection-demo *::selection {
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  @media (max-width: 900px) {
+    .ds-palette-row { grid-template-columns: 110px 1fr 20px 20px; }
+    .ds-hex, .ds-usage { display: none; }
   }
 </style>

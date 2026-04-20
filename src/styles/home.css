@@ -795,3 +795,195 @@ footer .foot-brand p { margin: 0 0 8px; max-width: 30ch; color: var(--ink-2); fo
   .topbar .status-chips { display: none }
   .cta .big { font-size: clamp(28px, 9vw, 42px) }
 }
+
+/* ============================================================
+   INNER PAGES
+   ============================================================ */
+
+.inner-shell {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px 96px;
+  position: relative;
+}
+
+/* Page header */
+.page-head {
+  padding: 48px 0 32px;
+  border-bottom: 1px dashed var(--rule);
+  margin-bottom: 48px;
+}
+.page-head .pg-num {
+  font-size: 11px; color: var(--accent); font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px;
+}
+.page-head h1 {
+  margin: 0 0 12px;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 0.95; letter-spacing: -0.02em; color: var(--ink);
+}
+.page-head h1 .it { font-style: italic; color: var(--accent) }
+.page-head .subtitle {
+  font-size: 14px; color: var(--ink-3); max-width: 60ch; line-height: 1.6;
+}
+
+/* Section inside inner page */
+.section-block {
+  padding: 40px 0 24px;
+}
+.section-block + .section-block {
+  border-top: 1px dashed var(--rule);
+}
+.section-block h2 {
+  margin: 0 0 24px;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(22px, 2.8vw, 30px);
+  line-height: 1; letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.section-block h2 .it { font-style: italic; color: var(--accent) }
+
+/* Entry rows (experience, education) */
+.entry {
+  border: 1px solid var(--rule); background: var(--paper);
+  padding: 20px 22px; margin-bottom: 10px; position: relative;
+  transition: border-color .15s;
+}
+.entry:hover { border-color: var(--ink-3) }
+.entry .e-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; margin-bottom: 8px;
+}
+.entry .e-title {
+  font-family: var(--serif); font-size: 22px; line-height: 1;
+  letter-spacing: -0.01em; color: var(--ink);
+}
+.entry .e-sub {
+  font-size: 12px; color: var(--ink-3); margin-top: 3px;
+}
+.entry .e-period {
+  font-size: 11px; color: var(--ink-3); border: 1px solid var(--rule);
+  padding: 3px 8px; background: var(--paper-2); white-space: nowrap; flex-shrink: 0;
+}
+.entry .e-body {
+  font-size: 13px; color: var(--ink-2); line-height: 1.6;
+}
+
+/* 2-col grid for education / skills categories */
+.entry-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+}
+
+/* Interests / misc tag cloud */
+.tag-cloud {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.tag-cloud .tag {
+  font-size: 12px; padding: 4px 10px; border: 1px solid var(--rule);
+  background: var(--paper-2); color: var(--ink-2);
+}
+
+/* Proficiency dots next to skill names */
+.skill-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; padding: 3px 8px; border: 1px solid var(--rule);
+  background: var(--paper-2); color: var(--ink-2);
+}
+.skill-tag .pdots {
+  display: flex; gap: 3px; align-items: center;
+}
+.skill-tag .pdot {
+  width: 5px; height: 5px; border: 1px solid var(--rule-soft);
+}
+.skill-tag .pdot.on { background: var(--accent); border-color: var(--accent) }
+
+/* Blog post prose */
+.prose-inner {
+  font-size: 15px; line-height: 1.75; color: var(--ink-2); max-width: 72ch;
+}
+.prose-inner h1, .prose-inner h2, .prose-inner h3 {
+  font-family: var(--serif); font-weight: 400; line-height: 1.1;
+  letter-spacing: -0.01em; color: var(--ink); margin: 1.6em 0 0.5em;
+}
+.prose-inner h1 { font-size: 36px }
+.prose-inner h2 { font-size: 28px }
+.prose-inner h3 { font-size: 22px }
+.prose-inner p { margin: 0 0 1em }
+.prose-inner a { border-bottom: 1px solid var(--accent); color: var(--ink) }
+.prose-inner a:hover { background: var(--accent); color: var(--paper) }
+.prose-inner strong { color: var(--ink); font-weight: 600 }
+.prose-inner em { font-style: italic }
+.prose-inner code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--paper-2); border: 1px solid var(--rule-soft);
+  padding: 1px 5px; color: var(--ink);
+}
+.prose-inner pre {
+  background: var(--paper-2); border: 1px solid var(--rule);
+  padding: 16px 20px; overflow-x: auto; margin: 1.5em 0;
+}
+.prose-inner pre code { background: none; border: 0; padding: 0; font-size: 13px }
+.prose-inner blockquote {
+  border-left: 3px solid var(--accent); margin: 1.5em 0;
+  padding: 4px 0 4px 20px; color: var(--ink-3); font-style: italic;
+}
+.prose-inner ul, .prose-inner ol { padding-left: 1.4em; margin: 0 0 1em }
+.prose-inner li { margin-bottom: 0.4em }
+.prose-inner hr { border: 0; border-top: 1px dashed var(--rule); margin: 2em 0 }
+.prose-inner img { max-width: 100%; border: 1px solid var(--rule) }
+
+/* Form fields */
+.field {
+  display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;
+}
+.field label {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 500;
+}
+.field input,
+.field textarea {
+  font-family: var(--mono); font-size: 13px; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--rule);
+  padding: 9px 12px; outline: none; width: 100%;
+  transition: border-color .15s;
+  -webkit-appearance: none;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: var(--ink-4) }
+.field input:focus,
+.field textarea:focus { border-color: var(--ink) }
+.field.err input,
+.field.err textarea { border-color: var(--accent) }
+.field .ferr { font-size: 11px; color: var(--accent); margin-top: 2px }
+.field textarea { resize: vertical; min-height: 120px; line-height: 1.55 }
+
+/* Contact page */
+.contact-link {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 18px; border: 1px solid var(--rule); background: var(--paper);
+  color: var(--ink); margin-bottom: 8px; transition: all .15s;
+}
+.contact-link:hover {
+  border-color: var(--ink); background: var(--paper-2);
+  transform: translate(-1px, -1px); box-shadow: 2px 2px 0 var(--accent);
+}
+.contact-link .cl-label {
+  font-size: 11px; color: var(--accent); font-weight: 600;
+  letter-spacing: .08em; min-width: 64px;
+}
+.contact-link .cl-name { font-size: 14px; color: var(--ink) }
+.contact-link .cl-val { font-size: 12px; color: var(--ink-3); margin-top: 1px }
+
+/* Responsive for inner pages */
+@media (max-width: 900px) {
+  .inner-shell { padding: 0 16px 64px }
+  .entry-grid { grid-template-columns: 1fr }
+}
+
+@media (max-width: 640px) {
+  .inner-shell { padding: 0 12px 48px }
+  .page-head { padding: 32px 0 24px }
+  .entry .e-head { flex-direction: column; gap: 8px }
+  .section-block { padding: 28px 0 16px }
+}
