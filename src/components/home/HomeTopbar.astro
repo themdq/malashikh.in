@@ -1,5 +1,6 @@
 ---
 import { meta, nav } from '@/data/site';
+const currentPath = Astro.url.pathname;
 ---
 <header class="topbar" role="banner">
   <a href="/" class="brand" aria-label="Home">
@@ -12,7 +13,7 @@ import { meta, nav } from '@/data/site';
 
   <nav class="primary" role="navigation" aria-label="Primary">
     {nav.map(item => (
-      <a href={item.href} class={item.href === '/' ? 'active' : undefined}>
+      <a href={item.href} class={item.href === currentPath ? 'active' : undefined}>
         <span class="b">[</span>{item.label.toLowerCase()}<span class="b">]</span>
       </a>
     ))}

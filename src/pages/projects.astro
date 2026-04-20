@@ -1,36 +1,69 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import ProjectCard from '@/components/ProjectCard';
+import InnerLayout from '@/layouts/InnerLayout.astro';
 import { getCollection } from 'astro:content';
 
-const projects = await getCollection('projects');
+const projects = (await getCollection('projects')).sort(
+  (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0)
+);
 ---
 
-<BaseLayout title="Projects" description="A showcase of my recent projects and work.">
-  <section class="container py-12 md:py-24">
-    <div class="max-w-6xl mx-auto">
-      <!-- Header -->
-      <div class="space-y-4 mb-12">
-        <h1 class="text-4xl font-bold tracking-tight">Projects</h1>
-        <p class="text-xl text-muted-foreground">
-          A selection of projects I've worked on. Each one taught me something new.
-        </p>
-      </div>
+<InnerLayout title="Projects" description="A showcase of recent projects and work by Dmitrii Malashikhin.">
+  <div class="page-head">
+    <div class="pg-num">§ 03 — work</div>
+    <h1>Selected <span class="it">projects</span></h1>
+    <p class="subtitle">A selection of projects I've worked on. Each one taught me something new.</p>
+  </div>
 
-      <!-- Projects Grid -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project) => (
-          <ProjectCard
-            client:load
-            title={project.data.title}
-            description={project.data.description}
-            tech={project.data.tech}
-            github={project.data.github}
-            demo={project.data.demo}
-            image={project.data.image}
-          />
-        ))}
+  <div class="project-grid">
+    {projects.map((project) => (
+      <div class="project">
+        <div class="p-head">
+          <span class="st">
+            <span class="sdot"></span>
+            active
+          </span>
+          <div style="display:flex;gap:12px">
+            {project.data.github && (
+              <a
+                href={project.data.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                style="color:var(--ink-3);font-size:11px;letter-spacing:.06em;transition:color .15s"
+                onmouseover="this.style.color='var(--accent)'"
+                onmouseout="this.style.color='var(--ink-3)'"
+              >
+                [github]
+              </a>
+            )}
+            {project.data.demo && (
+              <a
+                href={project.data.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                style="color:var(--ink-3);font-size:11px;letter-spacing:.06em;transition:color .15s"
+                onmouseover="this.style.color='var(--accent)'"
+                onmouseout="this.style.color='var(--ink-3)'"
+              >
+                [demo]
+              </a>
+            )}
+          </div>
+        </div>
+
+        <h3>{project.data.title}</h3>
+        <p>{project.data.description}</p>
+
+        <div class="tags">
+          {project.data.tech.map((t: string) => (
+            <span class="tag">{t}</span>
+          ))}
+        </div>
+
+        <div class="p-foot">
+          <span></span>
+          <span class="go">view →</span>
+        </div>
       </div>
-    </div>
-  </section>
-</BaseLayout>
+    ))}
+  </div>
+</InnerLayout>

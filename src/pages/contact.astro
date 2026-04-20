@@ -1,74 +1,69 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import InnerLayout from '@/layouts/InnerLayout.astro';
 import ContactForm from '@/components/ContactForm';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { social, contactPage } from '@/data/site';
 
 const contactLinks = social.map(s => ({
-  title: s.name.charAt(0).toUpperCase() + s.name.slice(1),
+  name: s.name.charAt(0).toUpperCase() + s.name.slice(1),
   value: s.label,
   href: s.href,
   label: `[${s.name}]`,
 }));
 ---
 
-<BaseLayout title="Contact" description="Get in touch with me.">
-  <section class="container py-12 md:py-24">
-    <div class="max-w-4xl mx-auto">
-      <!-- Header -->
-      <div class="space-y-4 mb-12">
-        <h1 class="text-4xl font-bold tracking-tight">Get in Touch</h1>
-        <p class="text-xl text-muted-foreground">
-          Have a question or want to work together? I'd love to hear from you.
-        </p>
-      </div>
+<InnerLayout title="Contact" description="Get in touch with Dmitrii Malashikhin.">
+  <div class="page-head">
+    <div class="pg-num">§ 06 — contact</div>
+    <h1>Get in <span class="it">touch</span></h1>
+    <p class="subtitle">Have a question or want to work together? I'd love to hear from you.</p>
+  </div>
 
-      <div class="grid md:grid-cols-2 gap-12">
-        <!-- Contact Form -->
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Send a Message</CardTitle>
-              <CardDescription>
-                Fill out the form below and I'll get back to you as soon as possible.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ContactForm client:load accessKey={contactPage.form.accessKey} />
-            </CardContent>
-          </Card>
-        </div>
-
-        <!-- Contact Info -->
-        <div class="space-y-6">
-          <div>
-            <h2 class="text-xl font-semibold mb-4">Other Ways to Connect</h2>
-            <div class="space-y-4">
-              {contactLinks.map((info) => (
-                <a
-                  href={info.href}
-                  target={info.href.startsWith('mailto') ? undefined : '_blank'}
-                  rel={info.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                  class="flex items-center gap-4 p-4 border border-dashed hover:border-foreground transition-colors"
-                >
-                  <span class="text-muted-foreground font-medium">{info.label}</span>
-                  <div>
-                    <p class="font-medium">{info.title}</p>
-                    <p class="text-sm text-muted-foreground">{info.value}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div class="p-6 border border-dashed">
-            <h3 class="font-semibold mb-2">Response Time</h3>
-            <p class="text-sm text-muted-foreground">
-              {contactPage.responseTime}
-            </p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+    <!-- Contact Form -->
+    <div>
+      <div class="section-block" style="padding-top:0">
+        <h2>Send a message</h2>
+        <div class="panel">
+          <div class="phead"><b>message</b></div>
+          <div style="padding:20px 22px">
+            <ContactForm client:load accessKey={contactPage.form.accessKey} />
           </div>
         </div>
       </div>
     </div>
-  </section>
-</BaseLayout>
+
+    <!-- Links -->
+    <div>
+      <div class="section-block" style="padding-top:0">
+        <h2>Other ways to connect</h2>
+        {contactLinks.map((info) => (
+          <a
+            href={info.href}
+            target={info.href.startsWith('mailto') ? undefined : '_blank'}
+            rel={info.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+            class="contact-link"
+          >
+            <span class="cl-label">{info.label}</span>
+            <span>
+              <div class="cl-name">{info.name}</div>
+              <div class="cl-val">{info.value}</div>
+            </span>
+          </a>
+        ))}
+
+        <div class="entry" style="margin-top:24px">
+          <div class="e-title" style="font-size:16px;margin-bottom:8px">Response time</div>
+          <div class="e-body">{contactPage.responseTime}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</InnerLayout>
+
+<style>
+  @media (max-width: 700px) {
+    div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

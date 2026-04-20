@@ -1,42 +1,43 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import BlogPostCard from '@/components/BlogPostCard.astro';
+import InnerLayout from '@/layouts/InnerLayout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+
+function fmtDate(d: Date) {
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+}
 ---
 
-<BaseLayout title="Blog" description="Thoughts on software development, DevOps, and technology.">
-  <section class="container py-12 md:py-24">
-    <div class="max-w-4xl mx-auto">
-      <!-- Header -->
-      <div class="space-y-4 mb-12">
-        <h1 class="text-4xl font-bold tracking-tight">Blog</h1>
-        <p class="text-xl text-muted-foreground">
-          Thoughts, tutorials, and life in USA.
-        </p>
-      </div>
+<InnerLayout title="Blog" description="Thoughts on software development, DevOps, and technology.">
+  <div class="page-head">
+    <div class="pg-num">§ 05 — writing</div>
+    <h1>The <span class="it">blog</span></h1>
+    <p class="subtitle">Thoughts, tutorials, and life in USA.</p>
+  </div>
 
-      <!-- Posts List -->
-      <div class="space-y-8">
-        {posts.map((post) => (
-          <BlogPostCard
-            title={post.data.title}
-            description={post.data.excerpt}
-            date={post.data.date}
-            tags={post.data.tags}
-            slug={post.slug}
-          />
-        ))}
-      </div>
-
-      {posts.length === 0 && (
-        <div class="text-center py-12">
-          <p class="text-muted-foreground">No blog posts yet. Check back soon!</p>
-        </div>
-      )}
+  {posts.length > 0 ? (
+    <div class="posts">
+      {posts.map((post) => (
+        <a href={`/blog/${post.slug}`} class="post">
+          <span class="date">{fmtDate(post.data.date)}</span>
+          <span>
+            <span class="title">{post.data.title}</span>
+            <span class="sub">{post.data.excerpt}</span>
+          </span>
+          <span class="tags">
+            {post.data.tags.slice(0, 2).map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </span>
+        </a>
+      ))}
     </div>
-  </section>
-</BaseLayout>
+  ) : (
+    <div style="padding:48px 0;color:var(--ink-3);font-size:13px">
+      No posts yet — check back soon.
+    </div>
+  )}
+</InnerLayout>

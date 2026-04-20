@@ -1,144 +1,146 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import SkillBadge from '@/components/SkillBadge.astro';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import InnerLayout from '@/layouts/InnerLayout.astro';
+
+const levels = { expert: 4, advanced: 3, intermediate: 2, beginner: 1 } as const;
+type Level = keyof typeof levels;
 
 const skillCategories = [
   {
     name: 'Languages',
     icon: '[lang]',
     skills: [
-      { name: 'TypeScript', level: 'advanced' as const },
-      { name: 'Python', level: 'expert' as const },
-      { name: 'C++', level: 'intermediate' as const },
-      { name: 'Kotlin', level: 'intermediate' as const },
-      { name: 'JavaScript', level: 'advanced' as const },
-      { name: 'Bash', level: 'advanced' as const },
-      { name: 'SQL', level: 'expert' as const },
+      { name: 'TypeScript', level: 'advanced' as Level },
+      { name: 'Python', level: 'expert' as Level },
+      { name: 'C++', level: 'intermediate' as Level },
+      { name: 'Kotlin', level: 'intermediate' as Level },
+      { name: 'JavaScript', level: 'advanced' as Level },
+      { name: 'Bash', level: 'advanced' as Level },
+      { name: 'SQL', level: 'expert' as Level },
     ],
   },
   {
     name: 'Data Engineering',
     icon: '[de]',
     skills: [
-      { name: 'Airflow', level: 'expert' as const },
-      { name: 'dbt', level: 'advanced' as const },
-      { name: 'Prefect', level: 'advanced' as const },
-      { name: 'Pandas', level: 'intermediate' as const },
-      { name: 'Spark', level: 'intermediate' as const },
+      { name: 'Airflow', level: 'expert' as Level },
+      { name: 'dbt', level: 'advanced' as Level },
+      { name: 'Prefect', level: 'advanced' as Level },
+      { name: 'Pandas', level: 'intermediate' as Level },
+      { name: 'Spark', level: 'intermediate' as Level },
     ],
   },
   {
     name: 'Backend',
     icon: '[be]',
     skills: [
-      { name: 'Node.js', level: 'advanced' as const },
-      { name: 'FastAPI', level: 'expert' as const },
-      { name: 'Express', level: 'advanced' as const },
-      { name: 'GraphQL', level: 'intermediate' as const },
-      { name: 'REST APIs', level: 'expert' as const },
+      { name: 'Node.js', level: 'advanced' as Level },
+      { name: 'FastAPI', level: 'expert' as Level },
+      { name: 'Express', level: 'advanced' as Level },
+      { name: 'GraphQL', level: 'intermediate' as Level },
+      { name: 'REST APIs', level: 'expert' as Level },
     ],
   },
   {
     name: 'Frontend',
     icon: '[fe]',
     skills: [
-      { name: 'React', level: 'advanced' as const },
-      { name: 'Next.js', level: 'advanced' as const },
-      { name: 'Astro', level: 'advanced' as const },
-      { name: 'Tailwind CSS', level: 'expert' as const },
-      { name: 'Vue.js', level: 'intermediate' as const },
+      { name: 'React', level: 'advanced' as Level },
+      { name: 'Next.js', level: 'advanced' as Level },
+      { name: 'Astro', level: 'advanced' as Level },
+      { name: 'Tailwind CSS', level: 'expert' as Level },
+      { name: 'Vue.js', level: 'intermediate' as Level },
     ],
   },
   {
     name: 'Databases',
     icon: '[db]',
     skills: [
-      { name: 'PostgreSQL', level: 'expert' as const },
-      { name: 'Redis', level: 'advanced' as const },
-      { name: 'Snowflake', level: 'intermediate' as const },
-      { name: 'MongoDB', level: 'intermediate' as const },
-      { name: 'Elasticsearch', level: 'intermediate' as const },
-      { name: 'Kafka', level: 'advanced' as const },
+      { name: 'PostgreSQL', level: 'expert' as Level },
+      { name: 'Redis', level: 'advanced' as Level },
+      { name: 'Snowflake', level: 'intermediate' as Level },
+      { name: 'MongoDB', level: 'intermediate' as Level },
+      { name: 'Elasticsearch', level: 'intermediate' as Level },
+      { name: 'Kafka', level: 'advanced' as Level },
     ],
   },
   {
     name: 'Cloud & Infrastructure',
     icon: '[cloud]',
     skills: [
-      { name: 'Kubernetes', level: 'advanced' as const },
-      { name: 'Docker', level: 'expert' as const },
-      { name: 'AWS', level: 'advanced' as const },
-      { name: 'Terraform', level: 'advanced' as const },
-      { name: 'Helm', level: 'advanced' as const },
+      { name: 'Kubernetes', level: 'advanced' as Level },
+      { name: 'Docker', level: 'expert' as Level },
+      { name: 'AWS', level: 'advanced' as Level },
+      { name: 'Terraform', level: 'advanced' as Level },
+      { name: 'Helm', level: 'advanced' as Level },
     ],
   },
   {
     name: 'DevOps & Tools',
     icon: '[ops]',
     skills: [
-      { name: 'Git', level: 'expert' as const },
-      { name: 'GitHub Actions', level: 'advanced' as const },
-      { name: 'GitLab CI/CD', level: 'expert' as const },
-      { name: 'Prometheus', level: 'intermediate' as const },
-      { name: 'Grafana', level: 'intermediate' as const },
+      { name: 'Git', level: 'expert' as Level },
+      { name: 'GitHub Actions', level: 'advanced' as Level },
+      { name: 'GitLab CI/CD', level: 'expert' as Level },
+      { name: 'Prometheus', level: 'intermediate' as Level },
+      { name: 'Grafana', level: 'intermediate' as Level },
     ],
   },
-  
 ];
 ---
 
-<BaseLayout title="Skills" description="Technical skills and areas of expertise.">
-  <section class="container py-12 md:py-24">
-    <div class="max-w-5xl mx-auto">
-      <!-- Header -->
-      <div class="space-y-4 mb-12">
-        <h1 class="text-4xl font-bold tracking-tight">Skills & Expertise</h1>
-        <p class="text-xl text-muted-foreground">
-          Technologies and tools I work with to build modern software solutions.
-        </p>
-      </div>
+<InnerLayout title="Skills" description="Technical skills and areas of expertise.">
+  <div class="page-head">
+    <div class="pg-num">§ 04 — expertise</div>
+    <h1>Skills &amp; <span class="it">tools</span></h1>
+    <p class="subtitle">Technologies and tools I work with to build modern software solutions.</p>
+  </div>
 
-      <!-- Legend -->
-      <div class="mb-8 p-4 border border-dashed">
-        <p class="text-sm text-muted-foreground mb-3">Proficiency Levels:</p>
-        <div class="flex flex-wrap gap-3">
-          <SkillBadge name="Expert" level="expert" />
-          <SkillBadge name="Advanced" level="advanced" />
-          <SkillBadge name="Intermediate" level="intermediate" />
-          <SkillBadge name="Beginner" level="beginner" />
+  <!-- Legend -->
+  <div class="section-block" style="padding-top:0;border-top:0">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:11px;color:var(--ink-3)">
+      <span style="letter-spacing:.1em;text-transform:uppercase;margin-right:4px">Proficiency:</span>
+      {(['expert', 'advanced', 'intermediate', 'beginner'] as Level[]).map(lvl => (
+        <span class="skill-tag">
+          <span>{lvl}</span>
+          <span class="pdots">
+            {[1,2,3,4].map(i => (
+              <span class={`pdot${i <= levels[lvl] ? ' on' : ''}`}></span>
+            ))}
+          </span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- Skills grid -->
+  <div class="entry-grid">
+    {skillCategories.map((category) => (
+      <div class="entry" style="min-height:auto">
+        <div class="e-head" style="margin-bottom:14px">
+          <div class="e-title" style="font-size:18px">{category.name}</div>
+          <span style="font-size:10.5px;color:var(--ink-3)">{category.icon}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          {category.skills.map((skill) => (
+            <span class="skill-tag">
+              <span>{skill.name}</span>
+              <span class="pdots">
+                {[1,2,3,4].map(i => (
+                  <span class={`pdot${i <= levels[skill.level] ? ' on' : ''}`}></span>
+                ))}
+              </span>
+            </span>
+          ))}
         </div>
       </div>
+    ))}
+  </div>
 
-      <!-- Skills Grid -->
-      <div class="grid md:grid-cols-2 gap-6">
-        {skillCategories.map((category) => (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span class="text-muted-foreground">{category.icon}</span>
-                {category.name}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div class="flex flex-wrap gap-2">
-                {category.skills.map((skill) => (
-                  <SkillBadge name={skill.name} level={skill.level} />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <!-- Additional Info -->
-      <div class="mt-12 p-6 border border-dashed">
-        <h2 class="text-xl font-semibold mb-4">Always Learning</h2>
-        <p class="text-muted-foreground">
-          Technology evolves rapidly, and I believe in continuous learning.
-          Currently exploring: AI/ML and cloud infrastructure.
-        </p>
-      </div>
+  <!-- Footer note -->
+  <div class="section-block">
+    <div class="entry">
+      <div class="e-title" style="font-size:16px;margin-bottom:8px">Always learning</div>
+      <div class="e-body">Technology evolves rapidly, and I believe in continuous learning. Currently exploring: AI/ML and cloud infrastructure.</div>
     </div>
-  </section>
-</BaseLayout>
+  </div>
+</InnerLayout>
