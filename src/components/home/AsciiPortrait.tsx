@@ -75,6 +75,12 @@ const ROWS = ART.length;
 const COLS = ART[0].length;
 const FADE = ['█','▓','▒','░','·',' '] as const;
 
+const EYE_ROW_START = 14;
+const EYE_ROW_END   = 30;
+const LEFT_EYE_START  = 8;  const LEFT_EYE_END  = 40;
+const RIGHT_EYE_START = 40; const RIGHT_EYE_END = 78;
+const MAX_EYE_SHIFT   = 3;
+
 function fadeChar(ch: string, steps: number): string {
   const idx = FADE.indexOf(ch as typeof FADE[number]);
   if (idx < 0) return ch;
@@ -91,12 +97,23 @@ export default function AsciiPortrait() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const mouse = mouseRef.current;
+    const d = dragRef.current;
+    const raw = d.tx / 20;
+    const eyeShift = Math.round(Math.max(-MAX_EYE_SHIFT, Math.min(MAX_EYE_SHIFT, raw)));
     const out: string[] = [];
     for (let y = 0; y < ROWS; y++) {
       const row = ART[y];
       let line = '';
+      const inEyeRow = y >= EYE_ROW_START && y <= EYE_ROW_END;
       for (let x = 0; x < COLS; x++) {
-        const ch = row[x] || ' ';
+        const inEye = inEyeRow && (
+          (x >= LEFT_EYE_START  && x <= LEFT_EYE_END) ||
+          (x >= RIGHT_EYE_START && x <= RIGHT_EYE_END)
+        );
+        const srcX = (inEye && eyeShift !== 0)
+          ? Math.max(0, Math.min(COLS - 1, x - eyeShift))
+          : x;
+        const ch = row[srcX] || ' ';
         const mdx = x - mouse.x;
         const mdy = (y - mouse.y) * 0.6;
         const md = Math.sqrt(mdx * mdx + mdy * mdy);
@@ -177,6 +194,7 @@ export default function AsciiPortrait() {
       d.vy = (p.clientY - d.lastY) / dt * 16;
       d.lastX = p.clientX; d.lastY = p.clientY; d.lastT = now;
       target.style.transform = `translate(${d.tx}px, ${d.ty}px) rotate(${d.tx * 0.02}deg)`;
+      render();
     }
     function end() {
       const target = wrapRef.current;
@@ -190,6 +208,7 @@ export default function AsciiPortrait() {
         d.tx += ax; d.ty += ay;
         ax *= 0.92; ay *= 0.92;
         t.style.transform = `translate(${d.tx}px, ${d.ty}px) rotate(${d.tx * 0.02}deg)`;
+        render();
         if (Math.abs(ax) + Math.abs(ay) > 0.5) { d.rAF = requestAnimationFrame(fling); }
         else { springBack(); }
       }
@@ -199,6 +218,7 @@ export default function AsciiPortrait() {
         t.classList.add('springing');
         d.tx = 0; d.ty = 0;
         t.style.transform = 'translate(0,0) rotate(0)';
+        render();
         setTimeout(() => wrapRef.current?.classList.remove('springing'), 600);
       }
       fling();
